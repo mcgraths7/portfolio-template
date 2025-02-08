@@ -26,11 +26,31 @@ const project = defineType({
           options: { hotspot: true },
           fields: [
             defineField({
+              name: "name",
+              title: "Name",
+              type: "string",
+            }),
+            defineField({
               name: "alt",
               title: "Alt",
               type: "string",
+              description: "Alt text for the image",
+            }),
+            defineField({
+              name: "caption",
+              title: "Caption",
+              type: "array",
+              of: [{ type: "block" }],
+              description:
+                "Caption for the image, to be rendered under the larger image",
             }),
           ],
+          preview: {
+            select: {
+              title: "name",
+              imageUrl: "asset.url",
+            },
+          },
         },
       ],
     }),

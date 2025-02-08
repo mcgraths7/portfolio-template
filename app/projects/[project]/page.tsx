@@ -69,7 +69,7 @@ export default function Project({ params }: ProjectProps) {
       {selectedImage && (
         <ImageModal
           image={selectedImage}
-          content={content}
+          content={selectedImage.caption}
           isOpen={!!selectedImage}
           onClose={() => setSelectedImage(null)}
         />

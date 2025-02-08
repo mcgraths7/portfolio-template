@@ -43,7 +43,8 @@ export async function getProject(slug: string): Promise<Project> {
         "images": images[]{ 
           _key,
           asset,
-          alt
+          alt,
+          caption
         },
         content
       }

@@ -1,3 +1,5 @@
+import { PortableTextBlock } from "next-sanity";
+
 export type Image = {
     _key: string,
     alt: string,
@@ -6,4 +8,5 @@ export type Image = {
       _type: string
     },
     url: string,
+    caption: PortableTextBlock[];
   }
