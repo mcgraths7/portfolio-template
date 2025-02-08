@@ -1,7 +1,8 @@
-import {  groq } from "next-sanity";
+import { groq } from "next-sanity";
 
 import { Project } from "@/types/sanity";
 import client from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/utils";
 
 export async function getProjects(): Promise<Project[]> {
   try {
@@ -11,10 +12,17 @@ export async function getProjects(): Promise<Project[]> {
         _type,
         name,
         "slug": slug.current,
-        "imageUrl": images[0].asset->url + "?q=50", // limit image quality to 50
-        "imageAlt": images[0].alt
+        image: images[0]{ 
+          _key,
+          asset,
+          alt
+        },
       }
     `);
+    
+    data.forEach(project => {
+      project.image.url = urlFor(project.image).quality(50).width(500).height(250).auto("format").url();
+    });
 
     return data;
   } catch (err) {
@@ -34,7 +42,7 @@ export async function getProject(slug: string): Promise<Project> {
         url,
         "images": images[]{ 
           _key,
-          "url": asset->url + "?q=40",
+          asset,
           alt
         },
         content
@@ -42,6 +50,10 @@ export async function getProject(slug: string): Promise<Project> {
     `,
       { slug }
     );
+
+    data.images.forEach(image => {
+      image.url = urlFor(image).quality(50).width(1920).height(1080).auto("format").url();
+    });
 
     return data;
   } catch (err) {

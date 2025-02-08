@@ -1,7 +1,5 @@
 import { Project } from "./project";
 
-// export type GalleryItem = Project; 
-
 export type Gallery = {
   _id: string;
   _createdAt: Date;

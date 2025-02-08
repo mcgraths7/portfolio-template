@@ -1,5 +1,6 @@
-import { Image } from "next-sanity/image";
+import Image from "next/image";
 import Link from "next/link";
+
 import { Gallery } from "@/types/sanity/gallery";
 
 interface GalleryContainerProps {
@@ -9,29 +10,30 @@ interface GalleryContainerProps {
 export default function GalleryContainer({ gallery }: GalleryContainerProps) {
   const { items: galleryItems } = gallery;
   return (
-    <div className="mt-4 responsive-grid">
+    <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {galleryItems &&
         galleryItems.map((g) => (
-          <div key={g._id}>
-            <div className="grid gap-4">
-              <Link
-                href={`/projects/${g.slug}`}
-                className="hover:scale-105 transition block"
-              >
-                {g.image && (
+          <div key={g._id} className="group">
+            <Link
+              href={`/projects/${g.slug}`}
+              prefetch={true}
+              className="block hover:scale-105 transition-transform"
+            >
+              {g.image && (
+                <div className="relative aspect-w-16 aspect-h-9">
                   <Image
                     src={g.image.url}
                     alt={g.image.alt || "Project image"}
-                    width={500}
-                    height={250}
+                    fill={true}
                     className="rounded-lg object-cover"
+                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
                   />
-                )}
-                <h3 className="mt-2 font-extrabold rainbow-text">
-                  {g.name}
-                </h3>
-              </Link>
-            </div>
+                </div>
+              )}
+              <h3 className="mt-2 font-extrabold rainbow-text">
+                {g.name}
+              </h3>
+            </Link>
           </div>
         ))}
     </div>

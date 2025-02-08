@@ -24,7 +24,7 @@ const gallery = defineType({
       of: [
         {
           type: "reference",
-          to: [{ type: "project" }], // Extend as needed
+          to: [{ type: "project" }],
         },
       ],
       description: "References to projects or other content types",

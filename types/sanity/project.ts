@@ -1,10 +1,6 @@
 import { PortableTextBlock } from "next-sanity";
 
-type Image = {
-  _key: string,
-  url: string,
-  alt: string
-}
+import { Image } from "@/types/sanity/image";
 
 export type Project = {
   _id: string;
@@ -13,11 +9,7 @@ export type Project = {
   name: string;
   slug: string;
   url: string;
-  image: {
-    _key: string,
-    url: string;
-    alt?: string;
-  };
   images: Image[],
+  image: Image,
   content: PortableTextBlock[];
 };

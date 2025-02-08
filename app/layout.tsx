@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
-import Footer from "./components/layout/footer";
-import Header from "./components/layout/header";
-import { ThemeProvider } from "./components/theme/ThemeProvider";
 import "./globals.css";
-import { getNavigation } from "@/sanity/queries/nav";
+import Header from "@/app/components/layout/Header"; 
+import Footer from "@/app/components/layout/Footer"; 
 
+import { ThemeProvider } from "@/app/components/theme/ThemeProvider";
+import { getNavigation } from "@/sanity/queries/nav";
+import useFetchData from "@/hooks/useFetchData";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,15 +25,19 @@ export const metadata: Metadata = {
   description: "Fuck you hire me",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const navItems = await getNavigation();
-  
-  const header = navItems.find((item) => item.slug === "header")
-  const footer = navItems.find((item) => item.slug === "footer")
+  const { data: navItems, loading } = useFetchData(getNavigation);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  const header = navItems && navItems.find((item) => item.slug.current === "header");
+  const footer = navItems && navItems.find((item) => item.slug.current === "footer");
 
   return (
     <html lang="en">
@@ -41,11 +46,11 @@ export default async function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex flex-col min-h-screen">
-            <Header data={header}/>
+            {header && <Header data={header} />}
             <main className="flex-grow container mx-auto px-4 py-8">
               {children}
             </main>
-            <Footer data={footer} />
+            {footer && <Footer data={footer} />}
           </div>
         </ThemeProvider>
       </body>

@@ -11,6 +11,7 @@ interface HeaderProps {
 }
 
 export default function Header({ data }: HeaderProps) {
+  console.log(data);
   const { logoUrl, logoAlt, links } = data;
 
   return (

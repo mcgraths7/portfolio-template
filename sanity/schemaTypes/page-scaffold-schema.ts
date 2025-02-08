@@ -43,7 +43,7 @@ const pageScaffold = defineType({
       of: [
         {
           type: "reference",
-          to: [{ type: "gallery" }], // Add any other schema types here
+          to: [{ type: "gallery" }],
         },
       ],
       description: "A gallery of projects or other content types",

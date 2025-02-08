@@ -21,6 +21,7 @@
     "@sanity/types": "^3.72.1",
     "@sanity/ui": "^2.11.7",
     "@sanity/vision": "^3.72.1",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
     "js-cookie": "^3.0.5",
     "next": "15.1.6",
     "next-sanity": "^9.8.47",

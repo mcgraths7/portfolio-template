@@ -10,7 +10,7 @@ export async function getNavigation(): Promise<Navigation[]> {
         *[_type == "navigation"]{
           _id,
           name,
-          "slug": slug.current,
+          slug,
           "logoUrl": logo.image.asset -> url,
           "logoAlt": logo.altText,
           links[] {
