@@ -28,7 +28,7 @@ export default function Home() {
       {galleries &&
         galleries.map((g) => (
           <div key={g._id}>
-            <h2 className="mt-12 text-3xl font-bold">{g.title}</h2>
+            <h2 className="mb-4 text-3xl font-bold">{g.title}</h2>
             <GalleryContainer gallery={g} />
           </div>
         ))}

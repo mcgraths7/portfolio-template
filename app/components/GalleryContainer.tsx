@@ -10,7 +10,7 @@ interface GalleryContainerProps {
 export default function GalleryContainer({ gallery }: GalleryContainerProps) {
   const { items: galleryItems } = gallery;
   return (
-    <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="responsive-grid mb-12">
       {galleryItems &&
         galleryItems.map((g) => (
           <div key={g._id} className="group">

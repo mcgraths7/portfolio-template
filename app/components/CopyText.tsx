@@ -6,7 +6,7 @@ interface CopyProps {
 
 export default function CopyText({ content }: CopyProps) {
   return (
-    <div className="mt-8 text-md">
+    <div className="text-md mb-12">
       <PortableText value={content} />
     </div>
   );

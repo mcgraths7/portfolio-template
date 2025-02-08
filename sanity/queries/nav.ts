@@ -5,7 +5,6 @@ import client from "@/sanity/lib/client";
 
 export async function getNavigation(slug: string): Promise<Navigation> {
   try {
-    console.log(slug);
     const data = await client.fetch<Navigation>(
       groq`
         *[_type == "navigation" && slug.current == $slug][0]{
