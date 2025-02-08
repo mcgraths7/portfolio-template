@@ -1,5 +1,5 @@
 import { PortableText } from "@portabletext/react";
-import Image from "next/image";
+import { Image } from "next-sanity/image";
 
 import { getProject } from "@/sanity/queries/projects";
 
@@ -40,7 +40,8 @@ export default async function Project({ params }: ProjectProps) {
             alt={img.alt}
             width={1920}
             height={1080}
-            className="mt-10 border-2 border-gray-700 object-cover rounded-xl"
+            loading="eager"
+            className="mt-10 border-2 border-gray-700 object-cover rounded-lg"
           />
         ))}
     </div>

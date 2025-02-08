@@ -1,12 +1,7 @@
-import { createClient, groq } from "next-sanity";
+import { groq } from "next-sanity";
 import { PageScaffold } from "@/types/sanity/page-scaffold";
-import { apiVersion, dataset, projectId } from "@/sanity/env";
 
-const client = createClient({
-  projectId,
-  dataset,
-  apiVersion,
-});
+import client from '@/sanity/lib/client'; 
 
 export async function getPageScaffold(slug: string): Promise<PageScaffold> {
   try {

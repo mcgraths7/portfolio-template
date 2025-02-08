@@ -1,15 +1,9 @@
-import { createClient, groq } from "next-sanity";
+import { groq } from "next-sanity";
 
-import { apiVersion, dataset, projectId } from "@/sanity/env";
 import { Copy } from "@/types/sanity";
+import client from "@/sanity/lib/client";
 
 export async function getCopyBySlug(slug: string): Promise<Copy> {
-  const client = createClient({
-    projectId,
-    dataset,
-    apiVersion,
-  });
-
   try {
     const data = await client.fetch<Copy>(
       groq`

@@ -1,13 +1,7 @@
-import { createClient, groq } from "next-sanity";
+import {  groq } from "next-sanity";
 
-import { apiVersion, dataset, projectId } from "@/sanity/env";
 import { Project } from "@/types/sanity";
-
-const client = createClient({
-  projectId,
-  dataset,
-  apiVersion,
-});
+import client from "@/sanity/lib/client";
 
 export async function getProjects(): Promise<Project[]> {
   try {
@@ -17,7 +11,7 @@ export async function getProjects(): Promise<Project[]> {
         _type,
         name,
         "slug": slug.current,
-        "imageUrl": images[0].asset->url,
+        "imageUrl": images[0].asset->url + "?q=50", // limit image quality to 50
         "imageAlt": images[0].alt
       }
     `);
@@ -40,7 +34,7 @@ export async function getProject(slug: string): Promise<Project> {
         url,
         "images": images[]{ 
           _key,
-          "url": asset->url, 
+          "url": asset->url + "?q=40",
           alt
         },
         content
