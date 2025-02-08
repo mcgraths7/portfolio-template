@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -5,13 +7,16 @@ import { ThemeToggle } from "../theme/ThemeToggle";
 import * as icons from "@/app/icons";
 import { Navigation } from "@/types/sanity";
 import { Image } from "next-sanity/image";
+import useFetchData from "@/hooks/useFetchData";
+import { getNavigation } from "@/sanity/queries/nav";
 
-interface HeaderProps {
-  data: Navigation;
-}
+export default function Header() {
+  const { data, loading, error } = useFetchData<Navigation>(getNavigation, "header");
 
-export default function Header({ data }: HeaderProps) {
-  console.log(data);
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  if (!data) return <div>Error: Navigation data not found...</div>;
+
   const { logoUrl, logoAlt, links } = data;
 
   return (

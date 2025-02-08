@@ -1,27 +1,32 @@
-"use client"
+"use client";
 
-import { useState, use } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { PortableText } from "@portabletext/react"
+import { useState, use } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { PortableText } from "@portabletext/react";
 
-import { ImageModal } from "@/app/components/ImageModal"
-import type { Project, Image as ProjectImage } from "@/types/sanity"
-import useFetchData from "@/hooks/useFetchData"
-import { getProject } from "@/sanity/queries/projects"
+import { ImageModal } from "@/app/components/ImageModal";
+import type { Project, Image as ProjectImage } from "@/types/sanity";
+import useFetchData from "@/hooks/useFetchData";
+import { getProject } from "@/sanity/queries/projects";
 
 type ProjectProps = {
   params: Promise<{ project: string }>;
 };
 
 export default function Project({ params }: ProjectProps) {
-  const { project: slug } = use(params);
-  const { data: project, loading, error } = useFetchData<Project>(getProject, slug);
+  const { project: projectSlug } = use(params);
+  const {
+    data: project,
+    loading,
+    error,
+  } = useFetchData<Project>(getProject, projectSlug);
   const [selectedImage, setSelectedImage] = useState<ProjectImage | null>(null);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
-  if (!project) return <div>Error: Project with slug {slug} not found...</div>;
+  if (!project)
+    return <div>Error: Project with slug {projectSlug} not found...</div>;
 
   const { name, url, content, images } = project;
 
@@ -70,6 +75,5 @@ export default function Project({ params }: ProjectProps) {
         />
       )}
     </div>
-  )
+  );
 }
-

@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 
-type FetchDataHook<T> = {
-  data: T | null;
-  loading: boolean;
-  error: Error | null;
-};
+type FetchFunctionWithParams<T> = (param: string) => Promise<T>;
+type FetchFunctionWithoutParams<T> = () => Promise<T>;
 
-function useFetchData<T>(fetchFunction: (param?: string) => Promise<T>, param?: string): FetchDataHook<T> {
+function useFetchData<T>(
+  fetchFunction: FetchFunctionWithParams<T> | FetchFunctionWithoutParams<T>,
+  param?: string
+) {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
@@ -14,7 +14,9 @@ function useFetchData<T>(fetchFunction: (param?: string) => Promise<T>, param?: 
   useEffect(() => {
     async function fetchData() {
       try {
-        const result = await fetchFunction(param);
+        const result = param
+          ? await (fetchFunction as FetchFunctionWithParams<T>)(param)
+          : await (fetchFunction as FetchFunctionWithoutParams<T>)();
         setData(result);
       } catch (err) {
         setError(err as Error);

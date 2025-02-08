@@ -3,11 +3,12 @@ import { groq } from "next-sanity";
 import { Navigation } from "@/types/sanity";
 import client from "@/sanity/lib/client";
 
-export async function getNavigation(): Promise<Navigation[]> {
+export async function getNavigation(slug: string): Promise<Navigation> {
   try {
-    const data = await client.fetch<Navigation[]>(
+    console.log(slug);
+    const data = await client.fetch<Navigation>(
       groq`
-        *[_type == "navigation"]{
+        *[_type == "navigation" && slug.current == $slug][0]{
           _id,
           name,
           slug,
@@ -21,7 +22,7 @@ export async function getNavigation(): Promise<Navigation[]> {
           },
           content
         }
-      `
+      `, { slug }
     );
 
     return data;

@@ -1,14 +1,18 @@
-"use client"
+"use client";
 
 import { getPageScaffold } from "@/sanity/queries/pageScaffolds";
 import PageTitle from "@/app/components/PageTitle";
 import CopyText from "@/app/components/CopyText";
 import GalleryContainer from "./components/GalleryContainer";
 import useFetchData from "@/hooks/useFetchData";
-import {PageScaffold } from "@/types/sanity";
+import { PageScaffold } from "@/types/sanity";
 
 export default function Home() {
-  const { data: page, loading, error } = useFetchData<PageScaffold>(getPageScaffold, "/");
+  const {
+    data: page,
+    loading,
+    error,
+  } = useFetchData<PageScaffold>(getPageScaffold, "/");
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
