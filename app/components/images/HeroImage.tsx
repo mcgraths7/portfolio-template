@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { DetailedImage } from "@/types/sanity";
+import { DetailedImage } from "../../../types/sanity";
 
 interface HeroImageProps {
   heroImage: DetailedImage;

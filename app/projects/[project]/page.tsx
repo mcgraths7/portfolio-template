@@ -4,10 +4,10 @@ import { use } from "react";
 import Link from "next/link";
 import { PortableText } from "@portabletext/react";
 
-import useFetchData from "@/hooks/useFetchData";
-import { getProject } from "@/sanity/queries/projects";
-import type { Project } from "@/types/sanity";
-import { EmblaCarousel } from "@/app/components/images/Carousel";
+import { EmblaCarousel } from "../../../app/components/images/Carousel";
+import useFetchData from "../../../hooks/useFetchData";
+import { getProject } from "../../../sanity/queries/projects";
+import type { Project } from "../../../types/sanity";
 
 type ProjectProps = {
   params: Promise<{ project: string }>;

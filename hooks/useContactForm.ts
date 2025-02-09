@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import { sendEmail } from "@/app/actions/sendEmail";
-import { EMAIL_REGEX } from "@/app/constants";
-import { FormData } from "@/types/app";
+import { sendEmail } from "../app/actions/sendEmail";
+import { EMAIL_REGEX } from "../app/constants";
+import { FormData } from "../types/app";
 
 const useContactForm = () => {
   const [formData, setFormData] = useState<FormData>({

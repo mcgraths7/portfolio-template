@@ -1,9 +1,9 @@
-import { Project } from "@/types/sanity/project";
-import { Navigation } from "@/types/sanity/navigation";
-import { Image } from "@/types/sanity/image";
-import { PageScaffold } from "@/types/sanity/pageScaffold";
-import { ProjectSection } from "@/types/sanity/projectSection";
-import { DetailedImage } from "@/types/sanity/detailedImage";
+import { Project } from "./project";
+import { Navigation } from "./navigation";
+import { Image } from "./image";
+import { PageScaffold } from "./pageScaffold";
+import { ProjectSection } from "./projectSection";
+import { DetailedImage } from "./detailedImage";
 
 export type {
   Project,

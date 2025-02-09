@@ -1,7 +1,7 @@
 import { groq } from "next-sanity";
 
-import { Project } from "@/types/sanity";
-import client from "@/sanity/lib/client";
+import { Project } from "../../types/sanity";
+import client from "../../sanity/lib/client";
 import { urlFor } from "../utils";
 
 export async function getProject(slug: string): Promise<Project> {

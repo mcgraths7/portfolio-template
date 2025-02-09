@@ -2,7 +2,7 @@
 
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 
-import type { Project } from "@/types/sanity";
+import type { Project } from "../../../types/sanity";
 import GalleryItem from "./MasonryItem";
 
 interface ImageGalleryProps {

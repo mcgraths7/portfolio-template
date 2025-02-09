@@ -16,6 +16,11 @@ export const title = assertValue(
   'Missing environment variable: NEXT_PUBLIC_SANITY_TITLE'
 );
 
+export const description = assertValue(
+  process.env.NEXT_PUBLIC_SANITY_DESCRIPTION,
+  'Missing environment variable: NEXT_PUBLIC_SANITY_DESCRIPTION'
+);
+
 function assertValue<T>(v: T | undefined, errorMessage: string): T {
   if (v === undefined) {
     throw new Error(errorMessage);

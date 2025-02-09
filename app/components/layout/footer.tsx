@@ -2,9 +2,9 @@
 
 import { PortableText } from "next-sanity";
 
-import useFetchData from "@/hooks/useFetchData";
-import { getNavigation } from "@/sanity/queries/nav";
-import { Navigation } from "@/types/sanity";
+import useFetchData from "../../../hooks/useFetchData";
+import { getNavigation } from "../../../sanity/queries/nav";
+import { Navigation } from "../../../types/sanity";
 
 export default function Footer() {
   const { data, loading, error } = useFetchData<Navigation>(getNavigation, "footer");

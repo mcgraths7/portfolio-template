@@ -1,10 +1,10 @@
 import { PortableTextBlock } from "next-sanity";
 import Link from "next/link";
 
-import PageTitle from "@/app/components/typography/PageTitle";
-import CopyText from "@/app/components/typography/CopyText";
-import HeroImage from "@/app/components/images/HeroImage";
-import { DetailedImage } from "@/types/sanity";
+import PageTitle from "../../../app/components/typography/PageTitle";
+import CopyText from "../../../app/components/typography/CopyText";
+import HeroImage from "../../../app/components/images/HeroImage";
+import { DetailedImage } from "../../../types/sanity";
 import { ButtonPrimary, ButtonSecondary } from "../inputs/Button";
 
 interface HeroProps {

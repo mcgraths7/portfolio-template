@@ -1,5 +1,6 @@
 import { PortableTextBlock } from "next-sanity";
-import { Project, DetailedImage } from "@/types/sanity";
+
+import { Project, DetailedImage } from "./";
 
 export type PageScaffold = {
   _id: string;

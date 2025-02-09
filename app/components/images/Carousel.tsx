@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 
-import { DetailedImage } from "@/types/sanity";
+import { DetailedImage } from "../../../types/sanity";
 
 interface ImageProps {
   images: DetailedImage[];

@@ -3,10 +3,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
 import "./globals.css";
-import Header from "@/app/components/layout/Header"; 
-import Footer from "@/app/components/layout/Footer"; 
+import Header from "../app/components/layout/Header"; 
+import Footer from "../app/components/layout/Footer"; 
+import { ThemeProvider } from "../app/components/theme/ThemeProvider";
 
-import { ThemeProvider } from "@/app/components/theme/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,8 +19,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "G-Zone",
-  description: "Fuck you hire me",
+  title: process.env.NEXT_PUBLIC_SANITY_TITLE,
+  description: process.env.NEXT_PUBLIC_SANITY_DESCRIPTION,
 };
 
 export default function RootLayout({

@@ -1,10 +1,10 @@
 "use client";
 
-import MasonryContainer from "@/app/components/masonry/MasonryContainer";
-import Hero from "@/app/components/typography/Hero";
-import useFetchData from "@/hooks/useFetchData";
-import { getPageScaffold } from "@/sanity/queries/pageScaffolds";
-import { PageScaffold } from "@/types/sanity";
+import MasonryContainer from "../app/components/masonry/MasonryContainer";
+import Hero from "../app/components/typography/Hero";
+import useFetchData from "../hooks/useFetchData";
+import { getPageScaffold } from "../sanity/queries/pageScaffolds";
+import { PageScaffold } from "../types/sanity";
 
 export default function Home() {
   const {

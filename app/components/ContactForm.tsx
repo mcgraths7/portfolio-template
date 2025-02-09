@@ -1,12 +1,12 @@
 import type React from "react";
 
-import useContactForm from "@/hooks/useContactForm";
-import { Input, Textarea } from "@/app/components/inputs/Input";
-import { ButtonPrimary } from "@/app/components/inputs/Button";
-import PageTitle from "@/app/components/typography/PageTitle";
-import useFetchData from "@/hooks/useFetchData";
-import { getPageScaffold } from "@/sanity/queries/pageScaffolds";
-import { PageScaffold } from "@/types/sanity";
+import { ButtonPrimary } from "../../app/components/inputs/Button";
+import { Input, Textarea } from "../../app/components/inputs/Input";
+import PageTitle from "../../app/components/typography/PageTitle";
+import useContactForm from "../../hooks/useContactForm";
+import useFetchData from "../../hooks/useFetchData";
+import { getPageScaffold } from "../../sanity/queries/pageScaffolds";
+import { PageScaffold } from "../../types/sanity";
 
 const ContactForm: React.FC = () => {
   const { formData, errors, handleChange, handleBlur, handleSubmit } = useContactForm();

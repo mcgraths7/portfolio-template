@@ -1,5 +1,6 @@
 import { PortableTextBlock } from "next-sanity";
-import { DetailedImage, ProjectSection } from "@/types/sanity";
+
+import { DetailedImage, ProjectSection } from "./";
 
 export type Project = {
   _id: string;

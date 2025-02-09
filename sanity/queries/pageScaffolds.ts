@@ -1,7 +1,7 @@
 import { groq } from "next-sanity";
-import { PageScaffold } from "@/types/sanity/pageScaffold";
 
-import client from "@/sanity/lib/client";
+import client from "../../sanity/lib/client";
+import { PageScaffold } from "../../types/sanity/pageScaffold";
 import { urlFor } from "../utils";
 
 export async function getPageScaffold(slug: string): Promise<PageScaffold> {

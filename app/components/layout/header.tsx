@@ -4,11 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { ThemeToggle } from "@/app/components/theme/ThemeToggle";
-import * as icons from "@/app/icons";
-import useFetchData from "@/hooks/useFetchData";
-import { getNavigation } from "@/sanity/queries/nav";
-import { Navigation } from "@/types/sanity";
+import { ThemeToggle } from "../../../app/components/theme/ThemeToggle";
+import * as icons from "../../../app/icons";
+import useFetchData from "../../../hooks/useFetchData";
+import { getNavigation } from "../../../sanity/queries/nav";
+import { Navigation } from "../../../types/sanity";
 
 export default function Header() {
   const { data, loading, error } = useFetchData<Navigation>(

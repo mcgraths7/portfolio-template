@@ -1,7 +1,7 @@
 "use client";
 
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 import Cookies from "js-cookie";
 
 export function ThemeToggle() {

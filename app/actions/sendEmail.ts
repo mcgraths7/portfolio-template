@@ -2,8 +2,8 @@
 
 import { Resend } from "resend";
 
-import { FormData } from "@/types/app";
-import { EMAIL_REGEX } from "@/app/constants";
+import { FormData } from "../../types/app";
+import { EMAIL_REGEX } from "../../app/constants";
 
 export async function sendEmail(formData: FormData) {
   try {

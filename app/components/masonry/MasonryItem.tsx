@@ -1,6 +1,7 @@
-import { Project } from "@/types/sanity";
 import Image from "next/image";
 import Link from "next/link";
+
+import { Project } from "../../../types/sanity";
 
 type MasonryItemProps = {
   item: Project;
