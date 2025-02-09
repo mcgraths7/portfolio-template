@@ -17,38 +17,70 @@ const project = defineType({
       options: { source: "name" },
     }),
     defineField({
-      name: "images",
-      title: "Images",
+      name: "heroImage",
+      title: "Hero Image",
+      type: "object",
+      fields: [
+        { name: "name", title: "Name", type: "string" },
+        { name: "altText", title: "Alt Text", type: "string" },
+        { name: "image", title: "Image", type: "image", options: { hotspot: true } },
+      ],
+    }),
+    defineField({
+      name: "projectSections",
+      title: "Project Sections",
       type: "array",
       of: [
         {
-          type: "image",
-          options: { hotspot: true },
+          type: "object",
           fields: [
-            defineField({
-              name: "name",
-              title: "Name",
-              type: "string",
-            }),
-            defineField({
-              name: "alt",
-              title: "Alt",
-              type: "string",
-              description: "Alt text for the image",
-            }),
-            defineField({
-              name: "caption",
-              title: "Caption",
+            { name: "name", title: "Name", type: "string" },
+            { name: "title", title: "Title", type: "string" },
+            {
+              name: "content",
+              title: "Content",
               type: "array",
               of: [{ type: "block" }],
-              description:
-                "Caption for the image, to be rendered under the larger image",
-            }),
+            },
+            {
+              name: "images",
+              title: "Images",
+              type: "array",
+              of: [
+                {
+                  type: "object",
+                  fields: [
+                    { name: "name", title: "Name", type: "string" },
+                    { name: "altText", title: "Alt Text", type: "string" },
+                    { name: "image", title: "Image", type: "image", options: { hotspot: true } },
+                    {
+                      name: "content",
+                      title: "Content",
+                      type: "array",
+                      of: [{ type: "block" }],
+                    },
+                  ],
+                  preview: {
+                    select: {
+                      title: "name",
+                      imageUrl: "image.asset.url",
+                    },
+                  },
+                },
+              ],
+            },
           ],
           preview: {
             select: {
-              title: "name",
-              imageUrl: "asset.url",
+              title: "title",
+              image: "images.0.image.asset",
+            },
+            prepare(selection) {
+              const { title, image } = selection;
+              return {
+                title,
+                media: image,
+              };
             },
           },
         },
@@ -69,7 +101,7 @@ const project = defineType({
   preview: {
     select: {
       title: "name",
-      image: "images.0.asset",
+      image: "heroImage.image.asset",
     },
     prepare(selection) {
       const { title, image } = selection;

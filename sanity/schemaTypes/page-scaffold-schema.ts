@@ -37,16 +37,15 @@ const pageScaffold = defineType({
       of: [{ type: "block" }],
     }),
     defineField({
-      name: "galleries",
-      title: "Galleries",
+      name: "projects",
+      title: "Projects",
       type: "array",
       of: [
         {
           type: "reference",
-          to: [{ type: "gallery" }],
+          to: [{ type: "project" }],
         },
       ],
-      description: "A gallery of projects or other content types",
     }),
   ],
 });

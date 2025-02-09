@@ -1,7 +1,8 @@
 import { groq } from "next-sanity";
 import { PageScaffold } from "@/types/sanity/page-scaffold";
 
-import client from '@/sanity/lib/client'; 
+import client from "@/sanity/lib/client";
+import { urlFor } from "../utils";
 
 export async function getPageScaffold(slug: string): Promise<PageScaffold> {
   try {
@@ -14,21 +15,31 @@ export async function getPageScaffold(slug: string): Promise<PageScaffold> {
         pageTitle,
         emphasisText,
         content,
-        galleries[]->{
+        projects[]->{
           _id,
           _createdAt,
           _type,
           name,
-          title,
-          items[]->{
-            _id,
-            _createdAt,
-            _type,
+          slug,
+          heroImage {
             name,
-            "slug": slug.current,
-            "image": images[0]{ 
-              "url": asset->url, 
-              "alt": alt 
+            image {
+              asset,
+              "dimensions": asset->metadata.dimensions
+            },
+            altText,
+          },
+          projectSections[] {
+            name,
+            title,
+            content,
+            images[] {
+              name,
+              altText,
+              image {
+                asset,
+                "dimensions": asset->metadata.dimensions
+              }
             }
           }
         }
@@ -36,6 +47,15 @@ export async function getPageScaffold(slug: string): Promise<PageScaffold> {
     `,
       { slug }
     );
+
+    data.projects.forEach((project) => {
+      const newUrl = urlFor(project.heroImage.image)
+        .quality(50)
+        .width(500)
+        .auto("format")
+        .url();
+      project.heroImage.url = newUrl;
+    });
 
     return data;
   } catch (err) {

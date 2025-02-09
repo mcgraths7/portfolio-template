@@ -2,7 +2,7 @@ import { groq } from "next-sanity";
 
 import { Project } from "@/types/sanity";
 import client from "@/sanity/lib/client";
-import { urlFor } from "@/sanity/utils";
+import { urlFor } from "../utils";
 
 export async function getProjects(): Promise<Project[]> {
   try {
@@ -12,16 +12,24 @@ export async function getProjects(): Promise<Project[]> {
         _type,
         name,
         "slug": slug.current,
-        image: images[0]{ 
-          _key,
-          asset,
-          alt
+        heroImage {
+          name,
+          image {
+            asset,
+            "dimensions": asset->metadata.dimensions
+          },
+          altText,
         },
       }
     `);
-    
-    data.forEach(project => {
-      project.image.url = urlFor(project.image).quality(50).width(500).height(250).auto("format").url();
+
+    data.forEach((project) => {
+      const newUrl = urlFor(project.heroImage.image)
+        .quality(50)
+        .width(500)
+        .auto("format")
+        .url();
+      project.heroImage.url = newUrl;
     });
 
     return data;
@@ -40,20 +48,36 @@ export async function getProject(slug: string): Promise<Project> {
         name,
         "slug": slug.current,
         url,
-        "images": images[]{ 
+        content,
+        projectSections[] {
           _key,
-          asset,
-          alt,
-          caption
-        },
-        content
+          name,
+          title,
+          content,
+          images[] {
+            _key,
+            name,
+            altText,
+            image {
+              asset,
+              "dimensions": asset->metadata.dimensions
+            }
+          }
+        }
       }
     `,
       { slug }
     );
 
-    data.images.forEach(image => {
-      image.url = urlFor(image).quality(50).width(1920).height(1080).auto("format").url();
+    data.projectSections.forEach((section) => {
+      section.images.forEach((sectionImage) => {
+        const newUrl = urlFor(sectionImage.image)
+          .quality(50)
+          .width(500)
+          .auto("format")
+          .url();
+        sectionImage.url = newUrl;
+      });
     });
 
     return data;

@@ -1,11 +1,11 @@
 "use client";
 
 import { getPageScaffold } from "@/sanity/queries/pageScaffolds";
-import PageTitle from "@/app/components/PageTitle";
-import CopyText from "@/app/components/CopyText";
-import GalleryContainer from "./components/GalleryContainer";
+import PageTitle from "@/app/components/typography/PageTitle";
+import CopyText from "@/app/components/typography/CopyText";
 import useFetchData from "@/hooks/useFetchData";
 import { PageScaffold } from "@/types/sanity";
+import MasonryContainer from "@/app/components/masonry/MasonryContainer";
 
 export default function Home() {
   const {
@@ -18,20 +18,14 @@ export default function Home() {
   if (error) return <div>Error: {error.message}</div>;
   if (!page) return <div>Error: Page with slug &quot;/&quot; not found...</div>;
 
-  const { pageTitle, emphasisText, content, galleries } = page;
+  const { pageTitle, emphasisText, content, projects } = page;
 
   return (
     <div className="max-w-7xl mx-auto h-full">
       <PageTitle title={pageTitle} emphasisText={emphasisText} />
       {content && <CopyText content={content} />}
 
-      {galleries &&
-        galleries.map((g) => (
-          <div key={g._id}>
-            <h2 className="mb-4 text-3xl font-bold">{g.title}</h2>
-            <GalleryContainer gallery={g} />
-          </div>
-        ))}
+      <MasonryContainer projects={projects} columnWidth={500} />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { PortableTextBlock } from "next-sanity";
-import { Gallery } from "./gallery";
+import { Project } from "./project";
 
 export type PageScaffold = {
   _id: string;
@@ -12,5 +12,5 @@ export type PageScaffold = {
   pageTitle: string;
   emphasisText: string;
   content: PortableTextBlock[];
-  galleries: Gallery[];
+  projects: Project[];
 };

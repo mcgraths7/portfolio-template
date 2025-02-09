@@ -13,12 +13,15 @@ function useFetchData<T>(
 
   useEffect(() => {
     async function fetchData() {
+
       try {
         const result = param
           ? await (fetchFunction as FetchFunctionWithParams<T>)(param)
           : await (fetchFunction as FetchFunctionWithoutParams<T>)();
+
         setData(result);
       } catch (err) {
+        console.log('problematic param', param);
         setError(err as Error);
       } finally {
         setLoading(false);

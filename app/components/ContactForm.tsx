@@ -1,9 +1,9 @@
 import type React from "react";
 
 import useContactForm from "@/hooks/useContactForm";
-import { Input, Textarea } from "@/app/components/Input";
-import { ButtonPrimary } from "@/app/components/Button";
-import PageTitle from "@/app/components/PageTitle";
+import { Input, Textarea } from "@/app/components/inputs/Input";
+import { ButtonPrimary } from "@/app/components/inputs/Button";
+import PageTitle from "@/app/components/typography/PageTitle";
 import useFetchData from "@/hooks/useFetchData";
 import { getPageScaffold } from "@/sanity/queries/pageScaffolds";
 import { PageScaffold } from "@/types/sanity";
@@ -26,7 +26,35 @@ const ContactForm: React.FC = () => {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
       <PageTitle title={pageTitle} emphasisText={emphasisText} />
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+        <div className="flex space-x-4">
+          <div className="w-1/2">
+            <Input
+              label="First Name"
+              type="text"
+              id="firstName"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              required
+              error={errors.firstName}
+            />
+          </div>
+          <div className="w-1/2">
+            <Input
+              label="Last Name"
+              type="text"
+              id="lastName"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              required
+              error={errors.lastName}
+            />
+          </div>
+        </div>
         <div>
           <Input
             label="Email"
@@ -37,11 +65,8 @@ const ContactForm: React.FC = () => {
             onChange={handleChange}
             onBlur={handleBlur}
             required
-            placeholder="your@email.com"
+            error={errors.email}
           />
-          {errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-          )}
         </div>
         <div>
           <Input
@@ -53,11 +78,8 @@ const ContactForm: React.FC = () => {
             onChange={handleChange}
             onBlur={handleBlur}
             required
-            placeholder="What's this about?"
+            error={errors.subject}
           />
-          {errors.subject && (
-            <p className="text-red-500 text-sm mt-1">{errors.subject}</p>
-          )}
         </div>
         <div>
           <Textarea
@@ -69,11 +91,8 @@ const ContactForm: React.FC = () => {
             onBlur={handleBlur}
             required
             rows={5}
-            placeholder="Your message here..."
+            error={errors.message}
           />
-          {errors.message && (
-            <p className="text-red-500 text-sm mt-1">{errors.message}</p>
-          )}
         </div>
         <div className="flex justify-end">
           <ButtonPrimary type="submit" className="px-8 py-3">

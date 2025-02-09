@@ -20,7 +20,7 @@ export default function Header() {
   const { logoUrl, logoAlt, links } = data;
 
   return (
-    <header className="shadow-md">
+    <header className="shadow-md sticky top-0 z-50 bg-background">
       <div className="header">
         <div className="mb-4 sm:mb-0">
           <Link href="/" className="text-2xl font-bold">
