@@ -11,20 +11,41 @@ import { getNavigation } from "@/sanity/queries/nav";
 import { Navigation } from "@/types/sanity";
 
 export default function Header() {
-  const { data, loading, error } = useFetchData<Navigation>(getNavigation, "header");
+  const { data, loading, error } = useFetchData<Navigation>(
+    getNavigation,
+    "header"
+  );
+
+  const mode = process.env.NEXT_PUBLIC_SITE_MODE || "development";
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
   if (!data) return <div>Error: Navigation data not found...</div>;
 
-  const { logoUrl, logoAlt, links } = data;
+  const { logoUrl, logoAlt } = data;
+  // Remove the studio link in production mode
+  let { links } = data;
+
+  if (mode === "production") {
+    links = links?.filter((l) => l.slug.current !== "studio");
+  }
 
   return (
     <header className="shadow-md sticky top-0 z-50 bg-background">
       <div className="header">
         <div className="mb-4 sm:mb-0">
           <Link href="/" className="text-2xl font-bold">
-            {logoUrl ? <Image src={logoUrl} alt={logoAlt} width={33} height={53} className="object-cover" /> : "Logo Text Here"}
+            {logoUrl ? (
+              <Image
+                src={logoUrl}
+                alt={logoAlt}
+                width={33}
+                height={53}
+                className="object-cover"
+              />
+            ) : (
+              "Logo Text Here"
+            )}
           </Link>
         </div>
         <nav className="flex-horizontal">

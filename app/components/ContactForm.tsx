@@ -25,7 +25,7 @@ const ContactForm: React.FC = () => {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
-      <PageTitle title={pageTitle} emphasisText={emphasisText} />
+      <PageTitle title={pageTitle} emphasisText={emphasisText} inverted={false} />
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
         <div className="flex space-x-4">
           <div className="w-1/2">

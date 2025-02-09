@@ -15,6 +15,14 @@ export async function getPageScaffold(slug: string): Promise<PageScaffold> {
         pageTitle,
         emphasisText,
         content,
+        heroImage {
+            name,
+            altText,
+            image {
+              asset,
+              "dimensions": asset->metadata.dimensions
+            }
+          },
         projects[]->{
           _id,
           _createdAt,
@@ -23,11 +31,11 @@ export async function getPageScaffold(slug: string): Promise<PageScaffold> {
           slug,
           heroImage {
             name,
+            altText,
             image {
               asset,
               "dimensions": asset->metadata.dimensions
-            },
-            altText,
+            }
           },
           projectSections[] -> {
             _key,
@@ -48,7 +56,9 @@ export async function getPageScaffold(slug: string): Promise<PageScaffold> {
     `,
       { slug }
     );
-    const {projects} = data;
+    const {projects, heroImage} = data;
+
+    // Optimize project images for masonry
     projects?.forEach((project) => {
       const newUrl = urlFor(project.heroImage.image)
         .quality(50)
@@ -57,6 +67,17 @@ export async function getPageScaffold(slug: string): Promise<PageScaffold> {
         .url();
       project.heroImage.url = newUrl;
     });
+
+    // Optimize hero image
+    if (!heroImage) {
+      return data;
+    }
+    const newUrl = urlFor(heroImage.image)
+      .quality(50)
+      .width(500)
+      .auto("format")
+      .url();
+    heroImage.url = newUrl;
 
     return data;
   } catch (err) {

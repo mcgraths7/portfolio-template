@@ -1,5 +1,5 @@
 import { PortableTextBlock } from "next-sanity";
-import { Project } from "./project";
+import { Project, DetailedImage } from "@/types/sanity";
 
 export type PageScaffold = {
   _id: string;
@@ -11,6 +11,7 @@ export type PageScaffold = {
   };
   pageTitle: string;
   emphasisText: string;
+  heroImage: DetailedImage;
   content: PortableTextBlock[];
   projects: Project[];
 };

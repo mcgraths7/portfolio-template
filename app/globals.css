@@ -14,6 +14,7 @@
     --popover-foreground: 220 85% 5%;
 
     --primary: 210 100% 50%;
+    --primary-dark: 210 100% 40%;
     --primary-foreground: 210 100% 100%;
 
     --secondary: 210 40% 95%;
@@ -113,14 +114,14 @@
     }
 
     .cta-button:hover {
-      background-color: hsl(var(--primary-foreground));
-      color: hsl(var(--primary));
+      background-color: hsl(var(--primary-dark));
+      color: hsl(var(--primary-foreground));
       border-color: hsl(var(--primary));
     }
 
     .cta-button:active {
-      background-color: hsl(var(--accent));
-      color: hsl(var(--accent-foreground));
+      background-color: hsl(var(--primary-dark));
+      color: hsl(var(--primary-foreground));
     }
 
     .dark .cta-button {
@@ -130,14 +131,50 @@
     }
 
     .dark .cta-button:hover {
-      background-color: hsl(var(--primary-foreground));
-      color: hsl(var(--primary));
+      background-color: hsl(var(--primary-dark));
+      color: hsl(var(--primary-foreground));
       border-color: hsl(var(--primary));
     }
 
     .dark .cta-button:active {
+      background-color: hsl(var(--primary-dark));
+      color: hsl(var(--primary-foreground));
+    }
+
+    .cta-button-secondary {
+      @apply px-6 py-3 rounded-md font-semibold text-center transition duration-300;
+
+      background-color: transparent;
+      color: hsl(var(--primary));
+      border: 1px solid hsl(var(--primary));
+    }
+
+    .cta-button-secondary:hover {
+      color: hsl(var(--primary-dark));
+      border-color: hsl(var(--primary-dark));
+    }
+
+    .cta-button-secondary:active {
+      background-color: hsl(var(--accent));
+      color: hsl(var(--primary-dark));
+      border-color: hsl(var(--primary-dark));
+    }
+
+    .dark .cta-button-secondary {
+      background-color: transparent;
+      color: hsl(var(--primary));
+      border: 1px solid hsl(var(--primary));
+    }
+
+    .dark .cta-button-secondary:hover {
+      color: hsl(var(--primary-foreground));
+      border-color: hsl(var(--primary-dark));
+    }
+
+    .dark .cta-button-secondary:active {
       background-color: hsl(var(--accent));
       color: hsl(var(--accent-foreground));
+      border-color: hsl(var(--primary-dark));
     }
 
     .header {

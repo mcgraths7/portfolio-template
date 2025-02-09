@@ -1,11 +1,10 @@
 "use client";
 
-import { getPageScaffold } from "@/sanity/queries/pageScaffolds";
-import PageTitle from "@/app/components/typography/PageTitle";
-import CopyText from "@/app/components/typography/CopyText";
-import useFetchData from "@/hooks/useFetchData";
-import { PageScaffold } from "@/types/sanity";
 import MasonryContainer from "@/app/components/masonry/MasonryContainer";
+import Hero from "@/app/components/typography/Hero";
+import useFetchData from "@/hooks/useFetchData";
+import { getPageScaffold } from "@/sanity/queries/pageScaffolds";
+import { PageScaffold } from "@/types/sanity";
 
 export default function Home() {
   const {
@@ -18,13 +17,11 @@ export default function Home() {
   if (error) return <div>Error: {error.message}</div>;
   if (!page) return <div>Error: Page with slug &quot;/&quot; not found...</div>;
 
-  const { pageTitle, emphasisText, content, projects } = page;
+  const { pageTitle, emphasisText, content, projects, heroImage} = page;
 
   return (
     <div className="max-w-7xl mx-auto h-full">
-      <PageTitle title={pageTitle} emphasisText={emphasisText} />
-      {content && <CopyText content={content} />}
-
+      <Hero title={pageTitle} emphasisText={emphasisText} content={content} heroImage={heroImage} />
       <MasonryContainer projects={projects} columnWidth={500} />
     </div>
   );
