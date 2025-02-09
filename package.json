@@ -32,6 +32,7 @@
     "react-dom": "^18.3.1",
     "react-feather": "^2.0.10",
     "react-responsive-masonry": "^2.7.1",
+    "resend": "^4.1.2",
     "sanity": "^3.72.1",
     "tailwindcss": "^3.4.1",
     "tailwindcss-animate": "^1.0.7"

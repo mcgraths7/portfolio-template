@@ -1,5 +1,5 @@
 import { PortableTextBlock } from "next-sanity";
-import { Image, ProjectSection } from "@/types/sanity";
+import { DetailedImage, ProjectSection } from "@/types/sanity";
 
 export type Project = {
   _id: string;
@@ -13,12 +13,7 @@ export type Project = {
     current: string;
   };
   url: string;
-  heroImage: {
-    altText: string;
-    name: string;
-    image: Image;
-    url: string;
-  };
+  heroImage: DetailedImage;
   projectSections: ProjectSection[];
   content: PortableTextBlock[];
 };

@@ -1,24 +1,17 @@
 import Image from "next/image";
 import { PortableText } from "@portabletext/react";
-import { PortableTextBlock } from "next-sanity";
 
 import Modal from "@/app/components/layout/Modal";
-import type { Image as ProjectImage } from "@/types/sanity/image";
+import type { DetailedImage } from "@/types/sanity";
 
 interface ImageModalProps {
-  image: {
-    url: string;
-    alt: string;
-    image: ProjectImage;
-  };
-  content: PortableTextBlock[];
+  image: DetailedImage;
   isOpen: boolean;
   onClose: () => void;
 }
 
 export function ImageModal({
   image,
-  content,
   isOpen,
   onClose,
 }: ImageModalProps) {
@@ -31,7 +24,7 @@ export function ImageModal({
         >
           <Image
             src={image.url}
-            alt={image.alt}
+            alt={image.altText}
             fill={true}
             className="object-contain"
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 75vw, 50vw"
@@ -41,7 +34,7 @@ export function ImageModal({
           className="mt-4 flex-grow overflow-auto"
           style={{ flexBasis: "15%" }}
         >
-          <PortableText value={content} />
+          <PortableText value={image.content} />
         </div>
       </div>
     </Modal>

@@ -1,20 +1,16 @@
 import { useState } from "react";
 
-interface ContactFormData {
-  email: string;
-  firstName: string;
-  lastName: string;
-  subject: string;
-  message: string;
-}
+import { sendEmail } from "@/app/actions/sendEmail";
+import { FormData } from "@/types/app";
 
 const useContactForm = () => {
-  const [formData, setFormData] = useState<ContactFormData>({
+  const [formData, setFormData] = useState<FormData>({
     email: "",
     firstName: "",
     lastName: "",
     subject: "",
     message: "",
+    apiResponse: "",
   });
 
   const [errors, setErrors] = useState({
@@ -23,7 +19,27 @@ const useContactForm = () => {
     lastName: "",
     subject: "",
     message: "",
+    apiResponse: "",
   });
+
+  const resetFormData = () => {
+    setFormData({
+      email: "",
+      firstName: "",
+      lastName: "",
+      subject: "",
+      message: "",
+      apiResponse: "",
+    });
+    setErrors({
+      email: "",
+      firstName: "",
+      lastName: "",
+      subject: "",
+      message: "",
+      apiResponse: "",
+    });
+  }
 
   const validateField = (fieldName: string, value: string) => {
     let error = "";
@@ -80,12 +96,14 @@ const useContactForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // For now, just log the form data
-    console.log("Form submitted:", formData);
-    // TODO: Implement actual email sending functionality
-  };
+    const response = await sendEmail(formData);
+    if (response.error) {
+      setErrors((prev) => ({ ...prev, apiResponse: response.error }));
+    } else {
+      resetFormData();
+  }};
 
-  return { formData, errors, handleChange, handleBlur, handleSubmit };
+  return { formData, errors, handleChange, handleBlur, handleSubmit, resetFormData };
 };
 
 export default useContactForm;

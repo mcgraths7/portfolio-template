@@ -48,8 +48,8 @@ export async function getPageScaffold(slug: string): Promise<PageScaffold> {
     `,
       { slug }
     );
-
-    data.projects.forEach((project) => {
+    const {projects} = data;
+    projects?.forEach((project) => {
       const newUrl = urlFor(project.heroImage.image)
         .quality(50)
         .width(500)

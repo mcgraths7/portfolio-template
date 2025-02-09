@@ -2,16 +2,11 @@ import React, { useCallback } from "react";
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 
-import { Image as ProjectImage } from "@/types/sanity";
+import { DetailedImage } from "@/types/sanity";
 
-type ImageProps = {
-  images: {
-    _key: string,
-    url: string;
-    altText: string;
-    image: ProjectImage;
-  }[];
-};
+interface ImageProps {
+  images: DetailedImage[];
+}
 
 export const EmblaCarousel = ({ images }: ImageProps) => {
   const [emblaRef, emblaApi] = useEmblaCarousel();
@@ -30,7 +25,12 @@ export const EmblaCarousel = ({ images }: ImageProps) => {
         <div className="embla__container">
           {images.map((image) => (
             <div key={image._key} className="embla__slide">
-              <Image src={image.url} alt={image.altText} width={500} height={500} />
+              <Image
+                src={image.url}
+                alt={image.altText}
+                width={500}
+                height={500}
+              />
             </div>
           ))}
         </div>
@@ -43,7 +43,12 @@ export const EmblaCarousel = ({ images }: ImageProps) => {
           stroke="currentColor"
           className="w-9 h-9 text-foreground transition-transform transform hover:scale-110"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 19l-7-7 7-7"
+          />
         </svg>
       </button>
       <button className="embla__next" onClick={scrollNext}>
@@ -54,7 +59,12 @@ export const EmblaCarousel = ({ images }: ImageProps) => {
           stroke="currentColor"
           className="w-9 h-9 text-foreground transition-transform transform hover:scale-110"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 5l7 7-7 7"
+          />
         </svg>
       </button>
     </div>

@@ -36,7 +36,6 @@ export async function getProject(slug: string): Promise<Project> {
     );
 
     data.projectSections.forEach((section) => {
-      console.log('section', section)
       section.images.forEach((sectionImage) => {
         const newUrl = urlFor(sectionImage.image)
           .quality(50)
