@@ -3,13 +3,13 @@
 import { Resend } from "resend";
 
 import { FormData } from "@/types/app";
+import { EMAIL_REGEX } from "@/app/constants";
 
 export async function sendEmail(formData: FormData) {
   try {
     const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
 
-    const { email, subject, message } = formData;
-    // const {email, firstName, lastName, subject, message} = formData;
+    const { email, firstName, lastName, subject, message } = formData;
 
     if (!email || !message) {
       return { error: "All fields are required" };
@@ -31,11 +31,22 @@ export async function sendEmail(formData: FormData) {
       };
     }
 
+    if (!EMAIL_REGEX.test(fromEmail)) {
+      return { error: "Malformed email address: RESEND_FROM_EMAIL_ADDRESS" };
+    }
+
+    if (!EMAIL_REGEX.test(toEmail)) {
+      return {
+        error: "Malformed email address: NEXT_PUBLIC_RESEND_TO_EMAIL_ADDRESS",
+      };
+    }
+
     const data = await resend.emails.send({
       from: fromEmail,
       to: toEmail,
       subject: subject,
       text: `
+        Name: ${firstName} ${lastName}
         Email: ${email}
         Message: ${message}
       `,

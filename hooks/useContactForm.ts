@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { sendEmail } from "@/app/actions/sendEmail";
+import { EMAIL_REGEX } from "@/app/constants";
 import { FormData } from "@/types/app";
 
 const useContactForm = () => {
@@ -43,12 +44,11 @@ const useContactForm = () => {
 
   const validateField = (fieldName: string, value: string) => {
     let error = "";
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (fieldName === "email") {
       if (!value) {
         error = "Email is required";
-      } else if (!emailRegex.test(value)) {
+      } else if (!EMAIL_REGEX.test(value)) {
         error = "Invalid email address";
       }
     } else if (fieldName === "subject") {
