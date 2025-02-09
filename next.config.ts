@@ -1,14 +1,17 @@
-import type { NextConfig } from "next";
-import path from "path";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    appDir: true,
+  },
   images: {
-    domains: ['cdn.sanity.io'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+        port: '',
+      },
+    ],
   },
-  webpack: (config) => {
-    config.resolve.alias['@'] = path.resolve(__dirname);
-    return config;
-  },
-};
+}
 
-export default nextConfig;
+module.exports = nextConfig
