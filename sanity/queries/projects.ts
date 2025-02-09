@@ -4,40 +4,6 @@ import { Project } from "@/types/sanity";
 import client from "@/sanity/lib/client";
 import { urlFor } from "../utils";
 
-export async function getProjects(): Promise<Project[]> {
-  try {
-    const data = await client.fetch<Project[]>(groq`
-      *[_type == "project"]{
-        _id,
-        _type,
-        name,
-        "slug": slug.current,
-        heroImage {
-          name,
-          image {
-            asset,
-            "dimensions": asset->metadata.dimensions
-          },
-          altText,
-        },
-      }
-    `);
-
-    data.forEach((project) => {
-      const newUrl = urlFor(project.heroImage.image)
-        .quality(50)
-        .width(500)
-        .auto("format")
-        .url();
-      project.heroImage.url = newUrl;
-    });
-
-    return data;
-  } catch (err) {
-    throw err;
-  }
-}
-
 export async function getProject(slug: string): Promise<Project> {
   try {
     const data = await client.fetch<Project>(
@@ -49,7 +15,7 @@ export async function getProject(slug: string): Promise<Project> {
         "slug": slug.current,
         url,
         content,
-        projectSections[] {
+        projectSections[] -> {
           _key,
           name,
           title,
@@ -70,6 +36,7 @@ export async function getProject(slug: string): Promise<Project> {
     );
 
     data.projectSections.forEach((section) => {
+      console.log('section', section)
       section.images.forEach((sectionImage) => {
         const newUrl = urlFor(sectionImage.image)
           .quality(50)

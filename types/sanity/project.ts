@@ -1,8 +1,6 @@
 import { PortableTextBlock } from "next-sanity";
 import { Image, ProjectSection } from "@/types/sanity";
 
-
-
 export type Project = {
   _id: string;
   _createdAt: Date;
@@ -24,4 +22,3 @@ export type Project = {
   projectSections: ProjectSection[];
   content: PortableTextBlock[];
 };
-

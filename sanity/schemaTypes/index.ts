@@ -1,10 +1,10 @@
 import { type SchemaTypeDefinition } from "sanity";
-import project from "./project-schema";
-import copy from "./copy-schema";
-import navigation from "./nav-schema";
-import pageScaffold from "./page-scaffold-schema";
-import gallery from "./gallery-schema";
+import project from "./projectSchema";
+import copy from "./copySchema";
+import navigation from "./navSchema";
+import pageScaffold from "./pageScaffoldSchema";
+import projectSection from "./projectSectionSchema";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [project, copy, navigation, pageScaffold, gallery],
+  types: [project, copy, navigation, pageScaffold, projectSection],
 };

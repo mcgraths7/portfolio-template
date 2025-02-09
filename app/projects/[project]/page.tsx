@@ -28,6 +28,7 @@ export default function Project({ params }: ProjectProps) {
 
   const { name, url, content, projectSections } = project;
 
+
   return (
     <div className="container mx-auto px-4 py-8">
       <header className="flex items-center justify-between mb-8">
