@@ -18,9 +18,10 @@ NEXT_PUBLIC_RESEND_TO_EMAIL_ADDRESS=email which should receive the email (person
 
 Coming Soon:
 
-1. Script to populate Sanity with seed data using faker
+1. Build pipeline
 2. ✨ Animations ✨ with Gsap
 3. More robust color palette
 4. Design overhaul
 5. More image optimizations
 6. Document Readme more completely
+7. Improve share link structure
