@@ -17,7 +17,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchPageScaffold = async () => {
-      const pageScaffold = await getPageScaffold("home");
+      const pageScaffold = await getPageScaffold("/");
       setPageScaffold(pageScaffold);
     };
 
