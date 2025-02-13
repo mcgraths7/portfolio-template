@@ -84,3 +84,19 @@ export async function getPageScaffold(slug: string): Promise<PageScaffold> {
     throw err;
   }
 }
+
+export async function getPageScaffoldSlugs(): Promise<PageScaffold[]> {
+  try {
+    const data = await client.fetch<PageScaffold[]>(
+      groq`
+      *[_type == "pageScaffold"]{
+        slug
+      }
+    `
+    );
+
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}

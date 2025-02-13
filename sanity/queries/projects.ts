@@ -51,3 +51,18 @@ export async function getProject(slug: string): Promise<Project> {
     throw err;
   }
 }
+
+export async function getProjectSlugs() {
+  try {
+    const data = await client.fetch<Project[]>(
+      groq`
+      *[_type == "project"]{
+        slug
+      }
+    `
+    );
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}

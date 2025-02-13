@@ -29,3 +29,19 @@ export async function getNavigation(slug: string): Promise<Navigation> {
     throw err;
   }
 }
+
+export async function getNavigationSlugs(): Promise<Navigation[]> {
+  try {
+    const data = await client.fetch<Navigation[]>(
+      groq`
+        *[_type == "navigation" && slug.current == $slug][0]{
+          slug
+        }
+      `
+    );
+
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}

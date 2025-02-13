@@ -1,8 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import { PortableText } from "@portabletext/react";
 
-import Modal from "../../../app/components/layout/Modal";
-import type { DetailedImage } from "../../../types/sanity";
+import Modal from "../layout/Modal";
+import type { DetailedImage } from "../../types/sanity";
 
 interface ImageModalProps {
   image: DetailedImage;

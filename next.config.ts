@@ -13,7 +13,11 @@ const nextConfig = {
         port: '',
       }
     ],
+    unoptimized: true,
   },
+  output: 'export',
+  trailingSlash: true, // Optional: ensures URLs end in a slash
+
 }
 
 module.exports = nextConfig
