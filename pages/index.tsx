@@ -33,8 +33,6 @@ export default function Home() {
 
     try {
       fetchPageScaffold();
-      fetchFooter();
-      fetchHeader();
     } catch (err) {
       console.error(err);
     } finally {
@@ -50,16 +48,14 @@ export default function Home() {
     pageScaffold;
 
   return (
-    <RootLayout footer={footer} header={header}>
-      <div className="max-w-7xl mx-auto h-full">
-        <Hero
-          title={pageTitle}
-          emphasisText={emphasisText}
-          content={content}
-          heroImage={heroImage}
-        />
-        <MasonryContainer projects={projects} columnWidth={500} />
-      </div>
-    </RootLayout>
+    <div className="max-w-7xl mx-auto h-full">
+      <Hero
+        title={pageTitle}
+        emphasisText={emphasisText}
+        content={content}
+        heroImage={heroImage}
+      />
+      <MasonryContainer projects={projects} columnWidth={500} />
+    </div>
   );
 }
