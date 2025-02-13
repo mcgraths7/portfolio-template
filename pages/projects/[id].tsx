@@ -53,7 +53,7 @@ export default function Project({ project }: { project: Project }) {
       <div className="mt-8 mb-12">
         <PortableText value={content} />
       </div>
-      {projectSections.map((section) => {
+      {projectSections && projectSections.map((section) => {
         return (
           <section key={section._key} className="mb-12">
             <h2 className="text-2xl font-bold mb-4">{section.title}</h2>
