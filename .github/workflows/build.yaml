@@ -30,7 +30,7 @@ jobs:
       - name: Run npm run build
         run: npm run build
       - name: install aws cli
-        run: sudo apt-get install awscli
+        run: sudo apt-get install aws-cli
       - name: Deploy to S3
         run: |
           aws s3 rm ${{ vars.S3_URL }} --recursive
