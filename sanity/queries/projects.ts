@@ -35,8 +35,8 @@ export async function getProject(slug: string): Promise<Project> {
       { slug }
     );
 
-    data.projectSections.forEach((section) => {
-      section.images.forEach((sectionImage) => {
+    data.projectSections?.forEach((section) => {
+      section.images?.forEach((sectionImage) => {
         const newUrl = urlFor(sectionImage.image)
           .quality(50)
           .width(500)
@@ -46,6 +46,21 @@ export async function getProject(slug: string): Promise<Project> {
       });
     });
 
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function getProjectSlugs() {
+  try {
+    const data = await client.fetch<Project[]>(
+      groq`
+      *[_type == "project"]{
+        slug
+      }
+    `
+    );
     return data;
   } catch (err) {
     throw err;

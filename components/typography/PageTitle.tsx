@@ -1,3 +1,5 @@
+"use client";
+
 interface PageProps {
   title: string;
   emphasisText: string;

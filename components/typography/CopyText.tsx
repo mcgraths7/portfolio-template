@@ -1,3 +1,5 @@
+"use client";
+
 import { PortableText, PortableTextBlock } from "next-sanity";
 
 interface CopyProps {

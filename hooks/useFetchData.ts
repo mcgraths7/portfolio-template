@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 
 type FetchFunctionWithParams<T> = (param: string) => Promise<T>;

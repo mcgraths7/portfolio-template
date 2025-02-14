@@ -4,31 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { ThemeToggle } from "../../../app/components/theme/ThemeToggle";
-import * as icons from "../../../app/icons";
-import useFetchData from "../../../hooks/useFetchData";
-import { getNavigation } from "../../../sanity/queries/nav";
-import { Navigation } from "../../../types/sanity";
+import { ThemeToggle } from "../theme/ThemeToggle";
+import * as icons from "../../utils/icons";
+import { Navigation } from "../../types/sanity";
 
-export default function Header() {
-  const { data, loading, error } = useFetchData<Navigation>(
-    getNavigation,
-    "header"
-  );
-
-  const mode = process.env.NEXT_PUBLIC_SITE_MODE || "development";
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-  if (!data) return <div>Error: Navigation data not found...</div>;
-
-  const { logoUrl, logoAlt } = data;
-  // Remove the studio link in production mode
-  let { links } = data;
-
-  if (mode === "production") {
-    links = links?.filter((l) => l.slug.current !== "studio");
-  }
+export default function Header({ header }: { header?: Navigation }) {
+  if (!header) return null;
+  
+  const { logoUrl, logoAlt, links } = header;
 
   return (
     <header className="shadow-md sticky top-0 z-50 bg-background">
@@ -52,9 +35,9 @@ export default function Header() {
           <ThemeToggle />
           <ul className="flex-horizontal">
             {links &&
-              links.map((l) => (
-                <li key={l.slug.current}>
-                  <Link href={l.socialUrl ?? `/${l.slug.current}`}>
+              links.map((l, idx) => (
+                <li key={l.slug?.current ?? l.socialUrl ?? `link-${idx}`}>
+                  <Link href={l.socialUrl ?? (l.slug ? `/${l.slug.current}` : '#')}>
                     {l.icon ? (
                       <FontAwesomeIcon
                         icon={icons[l.icon as keyof typeof icons]}
