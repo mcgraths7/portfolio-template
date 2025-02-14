@@ -2,33 +2,19 @@
 
 import { useState, useEffect } from "react";
 
-import RootLayout from "../components/layout/RootLayout";
 import MasonryContainer from "../components/masonry/MasonryContainer";
 import Hero from "../components/typography/Hero";
 import { getPageScaffold } from "../sanity/queries/pageScaffolds";
-import { getNavigation } from "../sanity/queries/nav";
-import { Navigation, PageScaffold } from "../types/sanity";
+import { PageScaffold } from "../types/sanity";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const [pageScaffold, setPageScaffold] = useState<PageScaffold>();
-  const [footer, setFooter] = useState<Navigation>();
-  const [header, setHeader] = useState<Navigation>();
 
   useEffect(() => {
     const fetchPageScaffold = async () => {
       const pageScaffold = await getPageScaffold("/");
       setPageScaffold(pageScaffold);
-    };
-
-    const fetchFooter = async () => {
-      const footer = await getNavigation("footer");
-      setFooter(footer);
-    };
-
-    const fetchHeader = async () => {
-      const header = await getNavigation("header");
-      setHeader(header);
     };
 
     try {
