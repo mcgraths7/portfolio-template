@@ -29,10 +29,10 @@ jobs:
         run: npm install dotenv
       - name: Run npm run build
         run: npm run build
-      - name: AWS CLI v2
-        uses: imehedi/actions-awscli-v2@latest
-        with:
-          args: s3
+      # - name: AWS CLI v2
+      #   uses: imehedi/actions-awscli-v2@latest
+      #   with:
+      #     args: s3
       - name: Deploy to S3
         run: |
           aws s3 rm ${{ vars.S3_URL }} --recursive
