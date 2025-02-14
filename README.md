@@ -18,7 +18,7 @@ NEXT_PUBLIC_RESEND_TO_EMAIL_ADDRESS=email which should receive the email (person
 
 Coming Soon:
 
-1. Build pipeline
+1. Convert fully to contentful from sanity
 2. ✨ Animations ✨ with Gsap
 3. More robust color palette
 4. Design overhaul
