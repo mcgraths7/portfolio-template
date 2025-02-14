@@ -1,10 +1,16 @@
+# Name the workflow. This appears in Github Actions
 name: G-Zone Build
+# When to run the workflow
 on:
+  # Run the workflow when a push is made to the main branch,
+  # or when something sends a build event
   repository_dispatch:
     types: [build-event]
+  # What should be run when the workflow is executed
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Set environment variables so that every step has access
     env:
       NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN: ${{ secrets.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN }}
       NEXT_PUBLIC_CONTENTFUL_SPACE_ID: ${{ secrets.NEXT_PUBLIC_CONTENTFUL_SPACE_ID }}
@@ -17,6 +23,7 @@ jobs:
       NEXT_PUBLIC_SITE_MODE: ${{ vars.NEXT_PUBLIC_SITE_MODE }}
       AWS_REGION: ${{ vars.AWS_REGION }}
       S3_URL: ${{ vars.S3_URL }}
+    # What steps should be run
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -24,13 +31,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 22
-      - name: Run npm ci
+      - name: Install dependencies using ci -> this guarantees existing lock file is respected
         run: npm ci
-      - name: install dotenv
+      - name: install dotenv -> this is required so that the build process can access the environment variables and secrets
         run: npm install dotenv
-      - name: Run npm run build
+      - name: Build -> this will run the build script in package.json
         run: npm run build
-      - name: Deploy to S3
+      - name: Deploy to S3 -> this will clear the existing bucket and then sync the new build
         run: |
           aws s3 rm ${{ vars.S3_URL }} --recursive
           aws s3 sync ./out ${{ vars.S3_URL }} --delete
