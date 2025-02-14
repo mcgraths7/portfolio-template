@@ -4,6 +4,18 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN: ${{ secrets.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN }}
+      NEXT_PUBLIC_CONTENTFUL_SPACE_ID: ${{ secrets.NEXT_PUBLIC_CONTENTFUL_SPACE_ID }}
+      NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+      NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      NEXT_PUBLIC_SANITY_TITLE: ${{ vars.NEXT_PUBLIC_SANITY_TITLE }}
+      NEXT_PUBLIC_SANITY_DESCRIPTION: ${{ vars.NEXT_PUBLIC_SANITY_DESCRIPTION }}
+      NEXT_PUBLIC_SITE_MODE: ${{ vars.NEXT_PUBLIC_SITE_MODE }}
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      S3_URL: ${{ vars.S3_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -17,11 +29,9 @@ jobs:
         run: npm install dotenv
       - name: Run npm run build
         run: npm run build
-        env:
-          NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN: ${{ secrets.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN }}
-          NEXT_PUBLIC_CONTENTFUL_SPACE_ID: ${{ secrets.NEXT_PUBLIC_CONTENTFUL_SPACE_ID }}
-          NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
-          NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
-          NEXT_PUBLIC_SANITY_TITLE: ${{ secrets.NEXT_PUBLIC_SANITY_TITLE }}
-          NEXT_PUBLIC_SANITY_DESCRIPTION: ${{ secrets.NEXT_PUBLIC_SANITY_DESCRIPTION }}
-          NEXT_PUBLIC_SITE_MODE: ${{ secrets.NEXT_PUBLIC_SITE_MODE }}
+      - name: install aws cli
+        run: sudo apt-get install awscli
+      - name: Deploy to S3
+        run: |
+          aws s3 rm ${{ vars.S3_URL }} --recursive
+          aws s3 sync ./out ${{ vars.S3_URL }} --delete
