@@ -1,6 +1,6 @@
 name: G-Zone Build
 on:
-  respository_dispatch:
+  repository_dispatch:
     types: [build-event]
 jobs:
   build:
