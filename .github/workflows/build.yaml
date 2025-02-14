@@ -13,5 +13,15 @@ jobs:
           node-version: 22
       - name: Run npm ci
         run: npm ci
+      - name: install dotenv
+        run: npm install dotenv
       - name: Run npm run build
         run: npm run build
+        env:
+          NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN: ${{ secrets.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN }}
+          NEXT_PUBLIC_CONTENTFUL_SPACE_ID: ${{ secrets.NEXT_PUBLIC_CONTENTFUL_SPACE_ID }}
+          NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+          NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
+          NEXT_PUBLIC_SANITY_TITLE: ${{ secrets.NEXT_PUBLIC_SANITY_TITLE }}
+          NEXT_PUBLIC_SANITY_DESCRIPTION: ${{ secrets.NEXT_PUBLIC_SANITY_DESCRIPTION }}
+          NEXT_PUBLIC_SITE_MODE: ${{ secrets.NEXT_PUBLIC_SITE_MODE }}
