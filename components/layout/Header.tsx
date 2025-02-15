@@ -6,12 +6,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { ThemeToggle } from "../theme/ThemeToggle";
 import * as icons from "../../utils/icons";
-import { NavigationItem } from "../../types/contentful";
+// import { NavigationItem } from "../../types/contentful";
+import { TypeNavigationSkeleton } from "../../types/generated";
 
-export default function Header({ header }: { header?: NavigationItem }) {
+export default function Header({
+  header,
+}: {
+  header: TypeNavigationSkeleton;
+}) {
   if (!header) return null;
-  
-  const {logo, linksCollection: {items: links}} = header;
 
   return (
     <header className="shadow-md sticky top-0 z-50 bg-background">
@@ -39,7 +42,7 @@ export default function Header({ header }: { header?: NavigationItem }) {
               {links &&
                 links.map((l, idx) => (
                   <li key={l.slug ?? l.socialUrl ?? `link-${idx}`}>
-                    <Link href={l.socialUrl ?? (l.slug ? `/${l.slug}` : '#')}>
+                    <Link href={l.socialUrl ?? (l.slug ? `/${l.slug}` : "#")}>
                       {l.icon ? (
                         <FontAwesomeIcon
                           icon={icons[l.icon.value as keyof typeof icons]}

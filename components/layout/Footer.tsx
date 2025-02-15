@@ -4,9 +4,9 @@ import { ReactNode } from 'react';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS, INLINES, Node } from '@contentful/rich-text-types';
 
-import { NavigationItem } from "../../types/contentful";
+import { TypeNavigationSkeleton } from '../../types/generated';
 
-export default function Footer({ footer }: { footer?: NavigationItem }) {
+export default function Footer({ footer }: { footer: TypeNavigationSkeleton }) {
   if (!footer) return null;
   
   const currentYear = new Date().getFullYear();

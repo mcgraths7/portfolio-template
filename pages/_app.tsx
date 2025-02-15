@@ -8,7 +8,8 @@ import Footer from '../components/layout/Footer';
 import Loading from '../components/layout/Loading';
 import Error from '../components/layout/Error';
 import getNavigationItem from '../contentful/queries/navigation';
-import { NavigationItem } from '../types/contentful';
+// import { NavigationItem } from '../types/contentful';
+import { TypeNavigationSkeleton } from '../types/generated';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,8 +22,8 @@ const geistMono = Geist_Mono({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [header, setHeader] = useState<NavigationItem>();
-  const [footer, setFooter] = useState<NavigationItem>();
+  const [header, setHeader] = useState<TypeNavigationSkeleton>();
+  const [footer, setFooter] = useState<TypeNavigationSkeleton>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -49,9 +50,9 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      <Header header={header} />
+      {header && <Header header={header} />}
       <Component {...pageProps} />
-      <Footer footer={footer} />
+      {footer && <Footer footer={footer} />}
     </div>
   );
 }

@@ -1,6 +1,6 @@
-import { NavigationItem } from "../../types/contentful";
+import { TypeNavigationSkeleton } from "../../types/generated";
 
-const getNavigationItem = async (slug: string): Promise<NavigationItem> => {
+const getNavigationItem = async (slug: string): Promise<TypeNavigationSkeleton> => {
   const query = `
       query GetNavigation($slug: String) {
         navigationCollection(where: { slug: $slug }) {
@@ -57,7 +57,7 @@ const getNavigationItem = async (slug: string): Promise<NavigationItem> => {
     },
   } = result;
 
-  return items[0] as NavigationItem;
+  return items[0] as TypeNavigationSkeleton;
 };
 
 export default getNavigationItem;
