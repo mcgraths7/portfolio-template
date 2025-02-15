@@ -3,29 +3,29 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Project } from "../../types/sanity";
+import { ProjectItem } from "../../types/contentful";
 
 type MasonryItemProps = {
-  item: Project;
+  item: ProjectItem;
 };
 
 const MasonryItem = ({ item }: MasonryItemProps) => {
+  console.log(item);
   const { heroImage, slug } = item;
 
   if (!heroImage) return null;
 
   const {
-    url,
     altText,
-    image: { dimensions },
+    image: { width, height, url },
   } = heroImage;
 
   const imageElement = (
     <Image
       src={url}
       alt={altText}
-      width={dimensions.width}
-      height={dimensions.height}
+      width={width}
+      height={height}
       className="object-cover transition-transform duration-300"
     />
   );
@@ -40,7 +40,7 @@ const MasonryItem = ({ item }: MasonryItemProps) => {
 
   return (
     <Link
-      href={`/projects/${slug.current}`}
+      href={`/projects/${slug}`}
       prefetch
       className="grid-item relative px-1 py-1 group"
     >

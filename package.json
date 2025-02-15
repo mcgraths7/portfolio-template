@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@contentful/rich-text-react-renderer": "^16.0.1",
+    "@contentful/rich-text-types": "^17.0.0",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
@@ -22,6 +24,7 @@
     "@sanity/ui": "^2.11.7",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "autoprefixer": "^10.4.20",
+    "contentful": "^11.4.6",
     "embla-carousel-react": "^8.5.2",
     "js-cookie": "^3.0.5",
     "next": "15.1.6",

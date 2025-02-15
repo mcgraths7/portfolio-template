@@ -6,7 +6,7 @@ import Link from "next/link";
 import PageTitle from "./PageTitle";
 import CopyText from "./CopyText";
 import HeroImage from "../images/HeroImage";
-import { DetailedImage } from "../../types/sanity";
+import { DetailedImage } from "../../types/contentful";
 import { ButtonPrimary, ButtonSecondary } from "../inputs/Button";
 
 interface HeroProps {

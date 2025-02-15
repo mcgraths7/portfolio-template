@@ -7,8 +7,8 @@ import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import Loading from '../components/layout/Loading';
 import Error from '../components/layout/Error';
-import { getNavigation } from '../sanity/queries/nav';
-import { Navigation } from '../types/sanity';
+import getNavigationItem from '../contentful/queries/navigation';
+import { NavigationItem } from '../types/contentful';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,16 +21,17 @@ const geistMono = Geist_Mono({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [header, setHeader] = useState<Navigation>();
-  const [footer, setFooter] = useState<Navigation>();
+  const [header, setHeader] = useState<NavigationItem>();
+  const [footer, setFooter] = useState<NavigationItem>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
+  
   useEffect(() => {
     async function fetchData() {
       try {
-        const headerData = await getNavigation('header');
-        const footerData = await getNavigation('footer');
+        const headerData = await getNavigationItem('header');
+        const footerData = await getNavigationItem('footer');
         setHeader(headerData);
         setFooter(footerData);
       } catch (err) {

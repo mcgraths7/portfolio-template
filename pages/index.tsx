@@ -5,20 +5,28 @@ import { useState, useEffect } from "react";
 import MasonryContainer from "../components/masonry/MasonryContainer";
 import Hero from "../components/typography/Hero";
 import { getPageScaffold } from "../sanity/queries/pageScaffolds";
-import { PageScaffold } from "../types/sanity";
+import {ProjectItem, PageItem} from "../types/contentful";
+import getPage from "../contentful/queries/page";
+import getProjects from "../contentful/queries/project";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
-  const [pageScaffold, setPageScaffold] = useState<PageScaffold>();
+  const [page, setPage] = useState<PageItem>();
+  const [projects, setProjects] = useState<ProjectItem[]>();
 
   useEffect(() => {
-    const fetchPageScaffold = async () => {
-      const pageScaffold = await getPageScaffold("/");
-      setPageScaffold(pageScaffold);
+    const fetchPage = async () => {
+      const contentfulPage = await getPage("/");
+      setPage(contentfulPage);
+    };
+    const fetchProjects = async () => {
+      const contentfulProjects = await getProjects();
+      setProjects(contentfulProjects);
     };
 
     try {
-      fetchPageScaffold();
+      fetchPage();
+      fetchProjects();
     } catch (err) {
       console.error(err);
     } finally {
@@ -28,9 +36,9 @@ export default function Home() {
 
   if (loading) return <div>Loading...</div>;
 
-  if (!pageScaffold) return <div>There was a problem loading the page</div>;
+  if (!page) return <div>There was a problem loading the page</div>;
 
-  const { pageTitle, emphasisText, content, heroImage, projects } =
+  const { pageTitle, emphasisText, content, heroImage } =
     pageScaffold;
 
   return (
