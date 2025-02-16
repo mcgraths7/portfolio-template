@@ -13,6 +13,7 @@ export async function getStaticPaths() {
       id: p.slug,
     },
   }));
+  console.log(paths);
 
   return { paths, fallback: false };
 }
