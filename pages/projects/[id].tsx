@@ -5,8 +5,6 @@ import { useRouter } from "next/router";
 import { EmblaCarousel } from "../../components/images/Carousel";
 import { getProjectIds, getProject } from "../../contentful/queries/project";
 import { ProjectItem } from "../../types/contentful";
-import type { Project } from "../../types/sanity";
-import { getProjectSlugs } from "../../sanity/queries/projects";
 
 export async function getStaticPaths() {
   const data = await getProjectIds();
@@ -15,17 +13,8 @@ export async function getStaticPaths() {
       id: p.slug,
     },
   }));
-  console.log('one', paths);
-  const dataTwo = await getProjectSlugs();
-  const pathsTwo = dataTwo.map((p: Project) => ({
-    params: {
-      id: p.slug.current,
-    },
-  }));
 
-  console.log('two', pathsTwo);
-
-  return { pathsTwo, fallback: false };
+  return { paths, fallback: false };
 }
 
 export async function getStaticProps({

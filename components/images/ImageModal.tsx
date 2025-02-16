@@ -1,10 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { PortableText } from "@portabletext/react";
 
 import Modal from "../layout/Modal";
-import type { DetailedImage } from "../../types/sanity";
+import { DetailedImage } from "../../types/contentful";
 
 interface ImageModalProps {
   image: DetailedImage;
@@ -25,7 +24,7 @@ export function ImageModal({
           style={{ flexBasis: "85%" }}
         >
           <Image
-            src={image.url}
+            src={image.image.url}
             alt={image.altText}
             fill={true}
             className="object-contain"
@@ -36,7 +35,7 @@ export function ImageModal({
           className="mt-4 flex-grow overflow-auto"
           style={{ flexBasis: "15%" }}
         >
-          <PortableText value={image.content} />
+          {/* <PortableText value={image.content} /> */}
         </div>
       </div>
     </Modal>
