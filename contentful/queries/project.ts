@@ -91,26 +91,45 @@ const getProjects = async (): Promise<ProjectItem[]> => {
   return items as ProjectItem[];
 };
 
-const getProject = async (id?: string): Promise<ProjectItem[]> => {
+const getProject = async (id?: string): Promise<ProjectItem> => {
   const query = `
     query GetProject($id: String!) {
-        project(id: $id) {
-          sys { 
+      project(id: $id) {
+        sys {
+          id
+        }
+        name
+        heroImage {
+          image {
+            url
+            width
+            height
+          }
+          altText
+        }
+        slug
+      }
+      projectSectionCollection {
+        items {
+          sys {
             id
           }
-          name
-          heroImage {
-              image{
-                  url
-                  width
-                  height
-              }
-              altText
+          title
+          content {
+            json
           }
-          slug
+          imagesCollection(limit: 10) {
+            items {
+              image {
+                url
+              }
+            }
           }
         }
-    `;
+      }
+    }
+  `;
+
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_CONTENTFUL_GRAPHQL_ENDPOINT}`,
     {
@@ -131,13 +150,14 @@ const getProject = async (id?: string): Promise<ProjectItem[]> => {
   }
 
   const result = await response.json();
+
   const {
-    data: {
-      projectCollection: { items },
-    },
+    data: { project },
   } = result;
 
-  return items as ProjectItem[];
+  console.log('from query', project);
+
+  return project as ProjectItem;
 };
 
 export { getProject, getProjects, getProjectIds };

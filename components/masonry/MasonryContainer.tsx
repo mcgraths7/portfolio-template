@@ -16,7 +16,7 @@ const ProjectGallery: React.FC<ImageGalleryProps> = ({ projects }) => {
       <Masonry>
         {projects && projects.map((project, idx) => {
           return (
-            <GalleryItem key={`${project._id}-${idx}`} item={project} />
+            <GalleryItem key={`${project.sys.id}-${idx}`} item={project} />
           );
         })}
       </Masonry>

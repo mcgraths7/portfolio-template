@@ -9,7 +9,6 @@ import Loading from '../components/layout/Loading';
 import Error from '../components/layout/Error';
 import {getNavigationItem, getNavigationIds} from '../contentful/queries/navigation';
 import { NavigationItem } from '../types/contentful';
-import { ProjectProvider } from '../context/ProjectContext';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +31,6 @@ export default function App({ Component, pageProps }: AppProps) {
     async function fetchData() {
       try {
         const ids = await getNavigationIds();
-        console.log(ids);
         const headerId = ids.find((item) => item.slug === 'header')?.sys.id;
         const footerId = ids.find((item) => item.slug === 'footer')?.sys.id;
 
@@ -56,12 +54,10 @@ export default function App({ Component, pageProps }: AppProps) {
   if (error) return <Error />;
 
   return (
-    <ProjectProvider>
-      <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {header && <Header header={header} />}
-        <Component {...pageProps} />
-        {footer && <Footer footer={footer} />}
-      </div>
-    </ProjectProvider>
+    <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      {header && <Header header={header} />}
+      <Component {...pageProps} />
+      {footer && <Footer footer={footer} />}
+    </div>
   );
 }
