@@ -28,9 +28,9 @@ jobs:
         run: npm ci
       - name: install dotenv
         run: npm install dotenv
-      - name: Run npm run build
+      - name: Build app
         run: npm run build
+      - name: Clear Existing Bucket Contents
+        run: aws s3 rm ${{ vars.S3_URL }} --recursive
       - name: Deploy to S3
-        run: |
-          aws s3 rm ${{ vars.S3_URL }} --recursive
-          aws s3 sync ./out ${{ vars.S3_URL }} --delete
+        run: aws s3 sync ./out ${{ vars.S3_URL }} --delete
