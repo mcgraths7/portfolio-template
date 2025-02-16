@@ -15,7 +15,7 @@ interface ImageProps {
       width: number;
       height: number;
     };
-  }
+  }[];
 }
 
 export const EmblaCarousel = ({ images }: ImageProps) => {
@@ -36,7 +36,7 @@ export const EmblaCarousel = ({ images }: ImageProps) => {
           {images.map((image) => (
             <div key={image.sys.id} className="embla__slide">
               <Image
-                src={image.url}
+                src={image.image.url}
                 alt={image.altText}
                 width={500}
                 height={500}

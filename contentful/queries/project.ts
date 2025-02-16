@@ -108,20 +108,24 @@ const getProject = async (id?: string): Promise<ProjectItem> => {
           altText
         }
         slug
-      }
-      projectSectionCollection {
-        items {
-          sys {
-            id
-          }
-          title
-          content {
-            json
-          }
-          imagesCollection(limit: 10) {
-            items {
-              image {
-                url
+        sectionsCollection {
+          items {
+            sys {
+              id
+            }
+            title
+            content {
+              json
+            }
+            imagesCollection(limit: 10) {
+              items {
+                sys {
+                  id
+                }
+                altText
+                image {
+                  url
+                }
               }
             }
           }
@@ -154,8 +158,6 @@ const getProject = async (id?: string): Promise<ProjectItem> => {
   const {
     data: { project },
   } = result;
-
-  console.log('from query', project);
 
   return project as ProjectItem;
 };

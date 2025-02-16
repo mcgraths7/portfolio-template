@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/router";
 
-// import { EmblaCarousel } from "../../components/images/Carousel";
+import { EmblaCarousel } from "../../components/images/Carousel";
 import { getProjectIds, getProject } from "../../contentful/queries/project";
 import { ProjectItem } from "../../types/contentful";
 
@@ -34,12 +34,13 @@ export default function Project({ project }: { project: ProjectItem }) {
   if (router.isFallback) return <div>Loading...</div>;
   if (!project) return <div>There was a problem loading the page</div>;
 
-  console.log(project)
   const {
     name,
     // richTextContent,
-    projectSectionCollection: {items: projectSections},
+    sectionsCollection: {items: projectSections},
   } = project;
+
+  console.log(projectSections)
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -61,8 +62,7 @@ export default function Project({ project }: { project: ProjectItem }) {
           return (
             <section key={section.sys.id} className="mb-12">
               <h2 className="text-2xl font-bold mb-4">{section.title}</h2>
-              console.log(section);
-              {/* <EmblaCarousel images={section.images} /> */}
+              <EmblaCarousel images={section.imagesCollection.items} />
             </section>
           );
         })}

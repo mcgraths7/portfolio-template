@@ -27,7 +27,7 @@ type ProjectItem = {
       altText: string;
     }[];
   };
-  projectSectionCollection: {
+  sectionsCollection: {
     items: {
       sys: {
         id: string;
@@ -36,8 +36,11 @@ type ProjectItem = {
       content: {
         json: Document;
       };
-      images: {
+      imagesCollection: {
         items: {
+          sys: {
+            id: string;
+          }
           image: {
             url: string;
             width: number;
