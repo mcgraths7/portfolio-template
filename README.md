@@ -9,10 +9,10 @@ Local Dev Steps:
 
 Coming Soon:
 
-1. Convert fully to contentful from sanity
-2. ✨ Animations ✨ with Gsap
-3. More robust color palette
-4. Design overhaul
-5. More image optimizations
+1. Convert to Styled Components 💅🏻
+2. More robust color palette
+3. Design overhaul
+4. More image optimizations
+5. ✨ Animations ✨ with Gsap
 6. Document Readme more completely
 7. Improve share link structure
