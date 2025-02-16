@@ -24,6 +24,7 @@
     "@sanity/ui": "^2.11.7",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "autoprefixer": "^10.4.20",
+    "cf-content-types-generator": "^2.15.5",
     "contentful": "^11.4.6",
     "embla-carousel-react": "^8.5.2",
     "js-cookie": "^3.0.5",

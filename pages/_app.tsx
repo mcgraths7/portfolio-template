@@ -7,9 +7,9 @@ import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import Loading from '../components/layout/Loading';
 import Error from '../components/layout/Error';
-import getNavigationItem from '../contentful/queries/navigation';
-// import { NavigationItem } from '../types/contentful';
-import { TypeNavigationSkeleton } from '../types/generated';
+import {getNavigationItem, getNavigationIds} from '../contentful/queries/navigation';
+import { NavigationItem } from '../types/contentful';
+import { ProjectProvider } from '../context/ProjectContext';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,8 +22,8 @@ const geistMono = Geist_Mono({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [header, setHeader] = useState<TypeNavigationSkeleton>();
-  const [footer, setFooter] = useState<TypeNavigationSkeleton>();
+  const [header, setHeader] = useState<NavigationItem>();
+  const [footer, setFooter] = useState<NavigationItem>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -31,8 +31,15 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const headerData = await getNavigationItem('header');
-        const footerData = await getNavigationItem('footer');
+        const ids = await getNavigationIds();
+        console.log(ids);
+        const headerId = ids.find((item) => item.slug === 'header')?.sys.id;
+        const footerId = ids.find((item) => item.slug === 'footer')?.sys.id;
+
+
+        const headerData = await getNavigationItem(headerId);
+        const footerData = await getNavigationItem(footerId);
+
         setHeader(headerData);
         setFooter(footerData);
       } catch (err) {
@@ -49,10 +56,12 @@ export default function App({ Component, pageProps }: AppProps) {
   if (error) return <Error />;
 
   return (
-    <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      {header && <Header header={header} />}
-      <Component {...pageProps} />
-      {footer && <Footer footer={footer} />}
-    </div>
+    <ProjectProvider>
+      <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {header && <Header header={header} />}
+        <Component {...pageProps} />
+        {footer && <Footer footer={footer} />}
+      </div>
+    </ProjectProvider>
   );
 }

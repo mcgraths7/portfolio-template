@@ -1,19 +1,24 @@
 import { Document } from "@contentful/rich-text-types";
 
-import ProjectItem from "./project";
-import DetailedImage from "./detailedImage";
-
 type PageItem = {
+  sys: {
+    id: string;
+  }
   name: string;
   slug: string;
   pageTitle: string;
   emphasizedTitle: string;
-  heroImage: DetailedImage;
+  heroImage: {
+    name: string;
+    altText: string;
+    image: { 
+      url: string;
+      width: number;
+      height: number
+    };
+  };
   richTextContent: {
     json: Document;
-  };
-  projectsCollection: {
-    items: ProjectItem[];
   };
 };
 

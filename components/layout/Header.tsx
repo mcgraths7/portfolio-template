@@ -1,20 +1,21 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { ThemeToggle } from "../theme/ThemeToggle";
 import * as icons from "../../utils/icons";
-// import { NavigationItem } from "../../types/contentful";
-import { TypeNavigationSkeleton } from "../../types/generated";
+import { NavigationItem } from "../../types/contentful";
 
 export default function Header({
   header,
 }: {
-  header: TypeNavigationSkeleton;
+  header: NavigationItem;
 }) {
   if (!header) return null;
+
+  const { logo, linksCollection } = header;
 
   return (
     <header className="shadow-md sticky top-0 z-50 bg-background">
@@ -22,7 +23,7 @@ export default function Header({
         <div className="mb-4 sm:mb-0">
           <Link href="/" className="text-2xl font-bold">
             {logo ? (
-              <Image
+              <img
                 src={logo.image.url}
                 alt={logo.altText}
                 width={33}
@@ -39,8 +40,8 @@ export default function Header({
           <ThemeToggle />
           <nav>
             <ul className="flex-horizontal">
-              {links &&
-                links.map((l, idx) => (
+              {linksCollection?.items && linksCollection.items.length > 0 &&
+                linksCollection.items.map((l, idx) => (
                   <li key={l.slug ?? l.socialUrl ?? `link-${idx}`}>
                     <Link href={l.socialUrl ?? (l.slug ? `/${l.slug}` : "#")}>
                       {l.icon ? (

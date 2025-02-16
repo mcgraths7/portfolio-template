@@ -4,10 +4,9 @@ import { useState, useEffect } from "react";
 
 import MasonryContainer from "../components/masonry/MasonryContainer";
 import Hero from "../components/typography/Hero";
-import { getPageScaffold } from "../sanity/queries/pageScaffolds";
-import {ProjectItem, PageItem} from "../types/contentful";
-import getPage from "../contentful/queries/page";
-import getProjects from "../contentful/queries/project";
+import { ProjectItem, PageItem } from "../types/contentful";
+import { getPageIds, getPage } from "../contentful/queries/page";
+import { getProjects } from "../contentful/queries/project";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -16,8 +15,10 @@ export default function Home() {
 
   useEffect(() => {
     const fetchPage = async () => {
-      const contentfulPage = await getPage("/");
-      setPage(contentfulPage);
+      const pageIds = await getPageIds();
+      const pageId = pageIds.find((item) => item.slug === "/")?.sys.id;
+      const page = await getPage(pageId);
+      setPage(page);
     };
     const fetchProjects = async () => {
       const contentfulProjects = await getProjects();
@@ -38,15 +39,14 @@ export default function Home() {
 
   if (!page) return <div>There was a problem loading the page</div>;
 
-  const { pageTitle, emphasisText, content, heroImage } =
-    pageScaffold;
+  const { pageTitle, emphasizedTitle, richTextContent, heroImage } = page;
 
   return (
     <div className="max-w-7xl mx-auto h-full">
       <Hero
         title={pageTitle}
-        emphasisText={emphasisText}
-        content={content}
+        emphasisText={emphasizedTitle}
+        richTextContent={richTextContent}
         heroImage={heroImage}
       />
       <MasonryContainer projects={projects} columnWidth={500} />

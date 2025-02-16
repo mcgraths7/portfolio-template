@@ -1,20 +1,68 @@
 import { PageItem } from "../../types/contentful";
 
-const getPage = async (slug: string): Promise<PageItem> => {
-    const query = `
-        query GetPage($slug: String!) {
-            pageCollection(where: { slug: $slug }) {
-                items {
-                    name
-                    slug
-                    pageTitle
-                    emphasizedTitle
-                    richTextContent {
-                        json
-                    }
-                }
-            }
+const getPageIds = async (): Promise<PageItem[]> => {
+  const query = `
+    query GetPageIds {
+      pageCollection {
+        items {
+          slug
+          sys {
+            id
+          }
         }
+      }
+    }
+  `;
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_CONTENTFUL_GRAPHQL_ENDPOINT}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN}`,
+      },
+      body: JSON.stringify({
+        query,
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    console.log("getting ids", response);
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const result = await response.json();
+  const {
+    data: {
+      pageCollection: { items },
+    },
+  } = result;
+
+  return items;
+};
+
+const getPage = async (id?: string): Promise<PageItem> => {
+  const query = `
+      query GetPage($id: String!) {
+        page(id: $id) {
+          name
+          slug
+          pageTitle
+          emphasizedTitle
+          richTextContent {
+              json
+          }
+          heroImage {
+            image {
+                url
+                width
+                height
+            }
+            altText
+          }
+        }
+      }
     `;
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_CONTENTFUL_GRAPHQL_ENDPOINT}`,
@@ -26,7 +74,7 @@ const getPage = async (slug: string): Promise<PageItem> => {
       },
       body: JSON.stringify({
         query,
-        variables: { slug },
+        variables: { id },
       }),
     }
   );
@@ -37,12 +85,10 @@ const getPage = async (slug: string): Promise<PageItem> => {
 
   const result = await response.json();
   const {
-    data: {
-      pageCollection: { items },
-    },
+    data: { page },
   } = result;
 
-  return items[0] as PageItem;
+  return page as PageItem;
 };
 
-export default getPage;
+export { getPage, getPageIds };

@@ -1,17 +1,30 @@
 import { Document } from "@contentful/rich-text-types";
 
-import LinkItem from "./link";
-import DetailedImage from "./detailedImage";
-
 type NavigationItem = {
-  name: string;
-  slug: string;
-  richTextContent: {
+  sys: {
+    id: string;
+  }
+  name?: string;
+  slug?: string;
+  richTextContent?: {
     json: Document;
   };
-  logo: DetailedImage;
-  linksCollection: {
-    items: LinkItem[];
+  logo?: {
+    name: string;
+    altText: string;
+    image: { url: string };
+  };
+  linksCollection?: {
+    items: {
+      name?: string;
+      slug?: string;
+      displayText?: string;
+      icon?: {
+        value: string;
+        title: string;
+      };
+      socialUrl?: string;
+    }[];
   };
 }
 

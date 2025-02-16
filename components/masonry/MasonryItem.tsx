@@ -10,7 +10,6 @@ type MasonryItemProps = {
 };
 
 const MasonryItem = ({ item }: MasonryItemProps) => {
-  console.log(item);
   const { heroImage, slug } = item;
 
   if (!heroImage) return null;
