@@ -3,8 +3,7 @@ type LinkItem = {
   slug: string;
   displayText: string;
   icon: {
-    title: string;
-    value: string;
+    url: string;
   };
   socialUrl: string;
 };

@@ -20,8 +20,7 @@ type NavigationItem = {
       slug?: string;
       displayText?: string;
       icon?: {
-        value: string;
-        title: string;
+         url: string;
       };
       socialUrl?: string;
     }[];
