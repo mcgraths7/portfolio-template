@@ -1,10 +1,17 @@
-/* eslint-disable @next/next/no-img-element */
+ 
 "use client";
 
 import Link from "next/link";
 
 import { ThemeToggle } from "../theme/ThemeToggle";
 import { NavigationItem } from "../../types/contentful";
+import styled from "styled-components";
+
+const Logo = styled.img`
+  width: 33px;
+  height: 53px;
+  object-fit: cover;
+`
 
 export default function Header({
   header,
@@ -19,15 +26,11 @@ export default function Header({
     <header className="shadow-md sticky top-0 z-50 bg-background">
       <div className="header">
         <div className="mb-4 sm:mb-0">
-          <Link href="/" className="text-2xl font-bold">
+          <Link href="/">
             {logo ? (
-              <img
+              <Logo
                 src={logo.image.url}
                 alt={logo.altText}
-                width={33}
-                height={53}
-                className="object-cover"
-                style={{ width: "33px", height: "53px" }}
               />
             ) : (
               "Logo Text Here"
