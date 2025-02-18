@@ -2,10 +2,8 @@
 "use client";
 
 import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { ThemeToggle } from "../theme/ThemeToggle";
-import * as icons from "../../utils/icons";
 import { NavigationItem } from "../../types/contentful";
 
 export default function Header({
@@ -45,9 +43,7 @@ export default function Header({
                   <li key={l.slug ?? l.socialUrl ?? `link-${idx}`}>
                     <Link href={l.socialUrl ?? (l.slug ? `/${l.slug}` : "#")}>
                       {l.icon ? (
-                        <FontAwesomeIcon
-                          icon={icons[l.icon.value as keyof typeof icons]}
-                        />
+                        <img src = {l.icon.url} alt={l.name} style={{width: "20px", height: "20px"}}/>
                       ) : (
                         l.displayText
                       )}

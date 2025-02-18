@@ -63,7 +63,9 @@ const getNavigationItem = async (id?: string): Promise<NavigationItem> => {
               name
               slug
               displayText
-              icon
+              icon {
+                url
+              }
               socialUrl
             }
           }
