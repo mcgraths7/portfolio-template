@@ -1,27 +1,18 @@
 🚧 Under Construction 🚧
 
-Steps:
+Local Dev Steps:
 
 1. Clone repo
-2. Create .env file:
-
-NEXT_PUBLIC_SANITY_PROJECT_ID=Sanity project id
-NEXT_PUBLIC_SANITY_DATASET=Sanity dataset identifier (production or development usually)
-NEXT_PUBLIC_SANITY_TITLE=The title of the page
-NEXT_PUBLIC_RESEND_API_KEY= API key from https://resend.com/
-NEXT_PUBLIC_RESEND_FROM_EMAIL_ADDRESS= email address email is coming from (you must own and configure the domain with resend)
-NEXT_PUBLIC_RESEND_TO_EMAIL_ADDRESS=email which should receive the email (personal or business email)
-
+2. Populate .env.template file
 3. npm install
 4. npm run dev
-5. Create content via localhost:3000/studio
 
 Coming Soon:
 
-1. Build pipeline
-2. ✨ Animations ✨ with Gsap
-3. More robust color palette
-4. Design overhaul
-5. More image optimizations
+1. Convert to Styled Components 💅🏻
+2. More robust color palette
+3. Design overhaul
+4. More image optimizations
+5. ✨ Animations ✨ with Gsap
 6. Document Readme more completely
 7. Improve share link structure

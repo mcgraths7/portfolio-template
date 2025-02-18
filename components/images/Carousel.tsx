@@ -4,10 +4,18 @@ import React, { useCallback } from "react";
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 
-import { DetailedImage } from "../../types/sanity";
-
 interface ImageProps {
-  images: DetailedImage[];
+  images: {
+    sys: {
+      id: string;
+    }
+    altText: string;
+    image: {
+      url: string;
+      width: number;
+      height: number;
+    };
+  }[];
 }
 
 export const EmblaCarousel = ({ images }: ImageProps) => {
@@ -26,9 +34,9 @@ export const EmblaCarousel = ({ images }: ImageProps) => {
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
           {images.map((image) => (
-            <div key={image._key} className="embla__slide">
+            <div key={image.sys.id} className="embla__slide">
               <Image
-                src={image.url}
+                src={image.image.url}
                 alt={image.altText}
                 width={500}
                 height={500}

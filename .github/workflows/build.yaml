@@ -1,0 +1,33 @@
+name: G-Zone Build
+on:
+  repository_dispatch:
+    types: [build-event]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN: ${{ secrets.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN }}
+      NEXT_PUBLIC_CONTENTFUL_SPACE_ID: ${{ secrets.NEXT_PUBLIC_CONTENTFUL_SPACE_ID }}
+      NEXT_PUBLIC_CONTENTFUL_GRAPHQL_ENDPOINT: ${{ secrets.NEXT_PUBLIC_CONTENTFUL_GRAPHQL_ENDPOINT }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      NEXT_PUBLIC_SITE_MODE: ${{ vars.NEXT_PUBLIC_SITE_MODE }}
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      S3_URL: ${{ vars.S3_URL }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install Nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+      - name: Run npm ci
+        run: npm ci
+      - name: install dotenv
+        run: npm install dotenv
+      - name: Build app
+        run: npm run build
+      - name: Clear Existing Bucket Contents
+        run: aws s3 rm ${{ vars.S3_URL }} --recursive
+      - name: Deploy to S3
+        run: aws s3 sync ./out ${{ vars.S3_URL }} --delete

@@ -2,37 +2,32 @@
 
 import { useState, useEffect } from "react";
 
-import RootLayout from "../components/layout/RootLayout";
 import MasonryContainer from "../components/masonry/MasonryContainer";
 import Hero from "../components/typography/Hero";
-import { getPageScaffold } from "../sanity/queries/pageScaffolds";
-import { getNavigation } from "../sanity/queries/nav";
-import { Navigation, PageScaffold } from "../types/sanity";
+import { ProjectItem, PageItem } from "../types/contentful";
+import { getPageIds, getPage } from "../contentful/queries/page";
+import { getProjects } from "../contentful/queries/project";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
-  const [pageScaffold, setPageScaffold] = useState<PageScaffold>();
-  const [footer, setFooter] = useState<Navigation>();
-  const [header, setHeader] = useState<Navigation>();
+  const [page, setPage] = useState<PageItem>();
+  const [projects, setProjects] = useState<ProjectItem[]>();
 
   useEffect(() => {
-    const fetchPageScaffold = async () => {
-      const pageScaffold = await getPageScaffold("/");
-      setPageScaffold(pageScaffold);
+    const fetchPage = async () => {
+      const pageIds = await getPageIds();
+      const pageId = pageIds.find((item) => item.slug === "/")?.sys.id;
+      const page = await getPage(pageId);
+      setPage(page);
     };
-
-    const fetchFooter = async () => {
-      const footer = await getNavigation("footer");
-      setFooter(footer);
-    };
-
-    const fetchHeader = async () => {
-      const header = await getNavigation("header");
-      setHeader(header);
+    const fetchProjects = async () => {
+      const contentfulProjects = await getProjects();
+      setProjects(contentfulProjects);
     };
 
     try {
-      fetchPageScaffold();
+      fetchPage();
+      fetchProjects();
     } catch (err) {
       console.error(err);
     } finally {
@@ -42,17 +37,16 @@ export default function Home() {
 
   if (loading) return <div>Loading...</div>;
 
-  if (!pageScaffold) return <div>There was a problem loading the page</div>;
+  if (!page) return <div>There was a problem loading the page</div>;
 
-  const { pageTitle, emphasisText, content, heroImage, projects } =
-    pageScaffold;
+  const { pageTitle, emphasizedTitle, richTextContent, heroImage } = page;
 
   return (
     <div className="max-w-7xl mx-auto h-full">
       <Hero
         title={pageTitle}
-        emphasisText={emphasisText}
-        content={content}
+        emphasisText={emphasizedTitle}
+        richTextContent={richTextContent}
         heroImage={heroImage}
       />
       <MasonryContainer projects={projects} columnWidth={500} />

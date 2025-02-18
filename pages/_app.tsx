@@ -7,8 +7,8 @@ import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import Loading from '../components/layout/Loading';
 import Error from '../components/layout/Error';
-import { getNavigation } from '../sanity/queries/nav';
-import { Navigation } from '../types/sanity';
+import {getNavigationItem, getNavigationIds} from '../contentful/queries/navigation';
+import { NavigationItem } from '../types/contentful';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,16 +21,23 @@ const geistMono = Geist_Mono({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [header, setHeader] = useState<Navigation>();
-  const [footer, setFooter] = useState<Navigation>();
+  const [header, setHeader] = useState<NavigationItem>();
+  const [footer, setFooter] = useState<NavigationItem>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
+  
   useEffect(() => {
     async function fetchData() {
       try {
-        const headerData = await getNavigation('header');
-        const footerData = await getNavigation('footer');
+        const ids = await getNavigationIds();
+        const headerId = ids.find((item) => item.slug === 'header')?.sys.id;
+        const footerId = ids.find((item) => item.slug === 'footer')?.sys.id;
+
+
+        const headerData = await getNavigationItem(headerId);
+        const footerData = await getNavigationItem(footerId);
+
         setHeader(headerData);
         setFooter(footerData);
       } catch (err) {
@@ -48,9 +55,9 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      <Header header={header} />
+      {header && <Header header={header} />}
       <Component {...pageProps} />
-      <Footer footer={footer} />
+      {footer && <Footer footer={footer} />}
     </div>
   );
 }
