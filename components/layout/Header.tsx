@@ -2,20 +2,15 @@
 "use client";
 
 import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { ThemeToggle } from "../theme/ThemeToggle";
-import * as icons from "../../utils/icons";
 import { NavigationItem } from "../../types/contentful";
 
-export default function Header({
-  header,
-}: {
-  header: NavigationItem;
-}) {
+export default function Header({ header }: { header: NavigationItem }) {
   if (!header) return null;
 
   const { logo, linksCollection } = header;
+  console.log(linksCollection);
 
   return (
     <header className="shadow-md sticky top-0 z-50 bg-background">
@@ -40,17 +35,12 @@ export default function Header({
           <ThemeToggle />
           <nav>
             <ul className="flex-horizontal">
-              {linksCollection?.items && linksCollection.items.length > 0 &&
+              {linksCollection?.items &&
+                linksCollection.items.length > 0 &&
                 linksCollection.items.map((l, idx) => (
                   <li key={l.slug ?? l.socialUrl ?? `link-${idx}`}>
                     <Link href={l.socialUrl ?? (l.slug ? `/${l.slug}` : "#")}>
-                      {l.icon ? (
-                        <FontAwesomeIcon
-                          icon={icons[l.icon.value as keyof typeof icons]}
-                        />
-                      ) : (
-                        l.displayText
-                      )}
+                      {l.icon ? <img src={l.icon.url} alt={`${l.name} icon`} style={{width: "20px", height: "23px"}}/> : l.displayText}
                     </Link>
                   </li>
                 ))}
