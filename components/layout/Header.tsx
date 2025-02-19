@@ -8,11 +8,10 @@ import { ThemeToggle } from "../theme/ThemeToggle";
 import { NavigationItem } from "../../types/contentful";
 
 const HeaderContainer = styled.header`
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px hsl(var(--box-shadow-color));
   position: sticky;
   top: 0;
   z-index: 50;
-  background: var(--background-color);
 `;
 
 const HeaderContent = styled.div`
@@ -21,12 +20,11 @@ const HeaderContent = styled.div`
   margin: 0 auto;
   padding: var(--space-4) var(--space-2);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: space-between;
 
-  @media (${mq.tablet}) {
-    flex-direction: row;
+  @media (${mq.mobile}) {
+    flex-direction: column;
   }
 `;
 

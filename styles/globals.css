@@ -63,6 +63,12 @@
   --color-accent: 46 87% 61%;
   --color-text: 296 88% 3%;
   --color-bg: 296 88% 97%;
+
+  --color-text-dark: 295 87% 97%;
+  --color-bg-dark: 295 87% 3%;
+
+  /* Box shadow color */
+  --box-shadow-color: 0 0% 0% / 0.1;
 }
 
 /* CSS Reset courtesy of https://www.joshwcomeau.com/css/custom-css-reset/ */
@@ -145,6 +151,15 @@ body {
   color: var(--color-text);
 }
 
+.dark body {
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-dark);
+}
+
+.dark {
+  --box-shadow-color: 0 0% 100% / 0.1;
+}
+
 h1 {
   font-size: var(--text-4xl);
   font-weight: var(--font-bold);
@@ -174,6 +189,10 @@ a {
   color: hsl(var(--color-text));
   text-decoration: none;
   transition: color 0.2s ease-in-out;
+}
+
+.dark a {
+  color: hsl(var(--color-text-dark));
 }
 
 a:hover {
