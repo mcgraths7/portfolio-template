@@ -3,10 +3,29 @@
 import { ReactNode } from 'react';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS, INLINES, Node } from '@contentful/rich-text-types';
+import styled from 'styled-components';
 
 import { NavigationItem } from '../../types/contentful';
 
-export default function Footer({ footer }: { footer: NavigationItem }) {
+const FooterContainer = styled.footer`
+  box-shadow: 0 -4px 6px hsl(var(--box-shadow-color));
+  background-color: hsl(var(--color-bg));
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+`;
+
+const FooterContent = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const FooterComponent = ({ footer }: { footer: NavigationItem }) => {
   if (!footer) return null;
   
   const currentYear = new Date().getFullYear();
@@ -23,12 +42,15 @@ export default function Footer({ footer }: { footer: NavigationItem }) {
     },
   };
 
+
   return (
-    <footer className="py-6">
-      <div className="footer-content">
+    <FooterContainer>
+      <FooterContent>
         <p>&copy; {currentYear}</p>
         {richTextContent && documentToReactComponents(richTextContent.json, options)}
-      </div>
-    </footer>
+      </FooterContent>
+    </FooterContainer>
   );
 }
+
+export default FooterComponent;

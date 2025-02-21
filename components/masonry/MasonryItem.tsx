@@ -1,13 +1,60 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import styled from "styled-components";
 
 import { ProjectItem } from "../../types/contentful";
 
 type MasonryItemProps = {
   item: ProjectItem;
 };
+
+const GridItem = styled.div`
+  position: relative;
+  padding: 0.25rem;
+`;
+
+const StyledLink = styled(Link)`
+  position: relative;
+  display: block;
+`;
+
+const Overlay = styled.div`
+  position: absolute;
+  inset: 0;
+  background-color: black;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s;
+  border-radius: 0.5rem;
+  &:hover {
+    opacity: 0.55;
+  }
+  &:hover .text {
+    opacity: 1;
+  }
+`;
+
+const Text = styled.span`
+  font-size: 1.125rem;
+  font-weight: bold;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s;
+`;
+
+const StyledImage = styled.img`
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  transition: transform 0.3s;
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
 
 const MasonryItem = ({ item }: MasonryItemProps) => {
   const { heroImage, slug } = item;
@@ -20,36 +67,25 @@ const MasonryItem = ({ item }: MasonryItemProps) => {
   } = heroImage;
 
   const imageElement = (
-    <Image
+    <StyledImage
       src={url}
       alt={altText}
       width={width}
       height={height}
-      className="object-cover transition-transform duration-300"
     />
   );
 
   if (!slug) {
-    return (
-      <div className="grid-item relative px-1 py-1">
-        {imageElement}
-      </div>
-    );
+    return <GridItem>{imageElement}</GridItem>;
   }
 
   return (
-    <Link
-      href={`/projects/${slug}`}
-      prefetch
-      className="grid-item relative px-1 py-1 group"
-    >
+    <StyledLink href={`/projects/${slug}`} prefetch>
       {imageElement}
-      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-bg-opacity duration-300 flex items-center justify-center">
-        <span className="text-lg font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          {item.name}
-        </span>
-      </div>
-    </Link>
+      <Overlay className="overlay">
+        <Text className="text">{item.name}</Text>
+      </Overlay>
+    </StyledLink>
   );
 };
 

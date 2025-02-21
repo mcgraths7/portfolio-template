@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/router";
+import styled from "styled-components";
 
 import { EmblaCarousel } from "../../components/images/Carousel";
 import { getProjectIds, getProject } from "../../contentful/queries/project";
@@ -28,6 +29,38 @@ export async function getStaticProps({
   return { props: { project } };
 }
 
+const Container = styled.div`
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-4);
+`;
+
+const Header = styled.header`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-8);
+`;
+
+const Title = styled.h1`
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  margin-bottom: var(--space-4);
+  background: linear-gradient(90deg, #ff8a00, #e52e71);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+`;
+
+const Section = styled.section`
+  margin-bottom: var(--space-12);
+`;
+
+const SectionTitle = styled.h2`
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  margin-bottom: var(--space-4);
+`;
+
 export default function Project({ project }: { project: ProjectItem }) {
   const router = useRouter();
 
@@ -36,36 +69,23 @@ export default function Project({ project }: { project: ProjectItem }) {
 
   const {
     name,
-    // richTextContent,
-    sectionsCollection: {items: projectSections},
+    sectionsCollection: { items: projectSections },
   } = project;
 
-  console.log(projectSections)
-
   return (
-    <div className="container mx-auto px-4 py-8">
-      <header className="flex items-center justify-between mb-8">
-        <h1 className="text-4xl font-bold mb-4 rainbow-text">{name}</h1>
-        {/* <Link
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="cta-button"
-        >
-          View Project
-        </Link> */}
-      </header>
+    <Container>
+      <Header>
+        <Title>{name}</Title>
+      </Header>
 
       <div className="mt-8 mb-12">{/* <PortableText value={content} /> */}</div>
       {projectSections &&
-        projectSections.map((section) => {
-          return (
-            <section key={section.sys.id} className="mb-12">
-              <h2 className="text-2xl font-bold mb-4">{section.title}</h2>
-              <EmblaCarousel images={section.imagesCollection.items} />
-            </section>
-          );
-        })}
-    </div>
+        projectSections.map((section) => (
+          <Section key={section.sys.id}>
+            <SectionTitle>{section.title}</SectionTitle>
+            <EmblaCarousel images={section.imagesCollection.items} />
+          </Section>
+        ))}
+    </Container>
   );
 }

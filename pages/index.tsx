@@ -1,12 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import styled from "styled-components";
 
 import MasonryContainer from "../components/masonry/MasonryContainer";
 import Hero from "../components/typography/Hero";
 import { ProjectItem, PageItem } from "../types/contentful";
 import { getPageIds, getPage } from "../contentful/queries/page";
 import { getProjects } from "../contentful/queries/project";
+
+const Container = styled.div`
+  max-width: 1400px;
+  margin: var(--space-8) auto;
+  height: 100%;
+`;
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -42,7 +49,7 @@ export default function Home() {
   const { pageTitle, emphasizedTitle, richTextContent, heroImage } = page;
 
   return (
-    <div className="max-w-7xl mx-auto h-full">
+    <Container>
       <Hero
         title={pageTitle}
         emphasisText={emphasizedTitle}
@@ -50,6 +57,6 @@ export default function Home() {
         heroImage={heroImage}
       />
       <MasonryContainer projects={projects} columnWidth={500} />
-    </div>
+    </Container>
   );
 }

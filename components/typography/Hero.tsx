@@ -2,6 +2,7 @@
 
 import { Document } from "@contentful/rich-text-types";
 import Link from "next/link";
+import styled from "styled-components";
 
 import PageTitle from "./PageTitle";
 import HeroImage from "../images/HeroImage";
@@ -18,6 +19,29 @@ interface HeroProps {
   heroImage: DetailedImage;
 }
 
+const Section = styled.section`
+  display: grid;
+  grid-template-columns: 1fr;
+  place-items: center;
+  gap: var(--space-12);
+  margin-bottom: var(--space-24);
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+`;
+
+const Content = styled.div``;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: var(--space-4);
+`;
+
+const RichTextContent = styled.div`
+  text-align: justify;
+`;
+
 const Hero: React.FC<HeroProps> = ({
   title,
   emphasisText,
@@ -25,23 +49,27 @@ const Hero: React.FC<HeroProps> = ({
   heroImage,
 }) => {
   return (
-    <section className="flex flex-col md:flex-row items-center justify-between gap-12 mb-24">
-      <div className="md:w-1/2 w-full">
+    <Section>
+      <Content>
         <PageTitle title={title} emphasisText={emphasisText} inverted />
-        {richTextContent && documentToReactComponents(richTextContent.json)}
-        <div className="flex gap-4">
+        {richTextContent && (
+          <RichTextContent>
+            {documentToReactComponents(richTextContent.json)}
+          </RichTextContent>
+        )}
+        <ButtonContainer>
           <Link href="/resume">
             <ButtonPrimary>Resume</ButtonPrimary>
           </Link>
           <Link href="/contact">
             <ButtonSecondary>Get in Touch</ButtonSecondary>
           </Link>
-        </div>
-      </div>
-      <div className="md:w-1/2 w-full">
+        </ButtonContainer>
+      </Content>
+      <Content>
         <HeroImage heroImage={heroImage} />
-      </div>
-    </section>
+      </Content>
+    </Section>
   );
 };
 

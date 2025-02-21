@@ -3,6 +3,41 @@
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import Cookies from "js-cookie";
+import styled from "styled-components";
+
+const StyledButton = styled.button<{ theme: string | undefined }>`
+  position: relative;
+  width: 4rem;
+  height: 2rem;
+  border-radius: 9999px;
+  transition: background-color 300ms ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-1);
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+`
+
+const ToggleKnob = styled.div<{ isDark: boolean }>`
+  position: absolute;
+  z-index: 2;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background-color: white;
+  transition: transform 300ms ease-in-out;
+  transform: translateX(${(props) => (props.isDark ? "1.75rem" : "-.25rem")});
+`
+
+const IconSpan = styled.span`
+  font-size: var(--text-xl);
+  z-index: 1;
+`
+
 
 export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
@@ -27,26 +62,10 @@ export function ThemeToggle() {
   }
 
   return (
-    <button
-      onClick={toggleTheme}
-      className={`
-        relative w-16 h-8 rounded-full
-        bg-gray-200 dark:bg-gray-600
-        transition-colors duration-300 ease-in-out
-        flex items-center justify-between px-1
-      `}
-      aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-    >
-      <span className="text-xl">🌚</span>
-      <span className="text-xl">🌞</span>
-      <div
-        className={`
-          absolute w-7 h-7 rounded-full bg-white
-          transition-all duration-300 ease-in-out
-          ${theme === "dark" ? "translate-x-8" : "translate-x-0"}
-          shadow-md
-        `}
-      />
-    </button>
-  );
+    <StyledButton onClick={toggleTheme} theme={theme}>
+      <IconSpan>🌚</IconSpan>
+      <ToggleKnob isDark={theme === "dark"} />
+      <IconSpan>🌞</IconSpan>
+    </StyledButton>
+  )
 }
