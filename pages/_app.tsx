@@ -53,10 +53,10 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <div
-        className={`${openSans.variable} antialiased`}
+        className={`${openSans.variable}`}
       >
         {header && <Header header={header} />}
-        {/* <Component {...pageProps} /> */}
+        <Component {...pageProps} />
         {footer && <Footer footer={footer} />}
       </div>
     </ThemeProvider>

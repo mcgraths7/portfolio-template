@@ -142,18 +142,17 @@ h6 {
 }
 
 /* Base styles */
+
 body {
   font-family: var(--font-sans);
   font-size: var(--text-base);
   line-height: var(--leading-normal);
   font-weight: var(--font-normal);
-  background-color: var(--color-bg);
-  color: var(--color-text);
 }
 
 .dark body {
-  background-color: var(--color-bg-dark);
-  color: var(--color-text-dark);
+  background-color: hsl(var(--color-bg-dark));
+  color: hsl(var(--color-text-dark));
 }
 
 .dark {

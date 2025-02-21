@@ -1,8 +1,27 @@
 "use client";
 
-import Image from "next/image";
+import styled from "styled-components";
 
 import { DetailedImage } from "../../types/contentful";
+
+const ImageContainer = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  height: 600px;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    height: auto;
+    aspect-ratio: 11/15;
+  }
+`;
+
+const StyledImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
 
 interface HeroImageProps {
   heroImage: DetailedImage;
@@ -10,14 +29,9 @@ interface HeroImageProps {
 
 const HeroImage = ({ heroImage }: HeroImageProps) => {
   return (
-    <div className="relative w-[440px] h-[600px]">
-      <Image
-        src={heroImage.image.url}
-        alt={heroImage.altText}
-        fill
-        className="object-cover"
-      />
-    </div>
+    <ImageContainer>
+      <StyledImage src={heroImage.image.url} alt={heroImage.altText} />
+    </ImageContainer>
   );
 };
 
