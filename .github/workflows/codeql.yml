@@ -1,0 +1,51 @@
+name: CodeQL
+
+# GitHub's static analysis. Free on public repositories, and the standard
+# baseline for catching injection, unsafe deserialization and similar classes
+# of bug that type-checking and review both miss.
+#
+# The weekly schedule is the point of it: an alert can appear because CodeQL
+# learned a new pattern, not because anyone changed the code, so waiting for
+# the next pull request would leave it unseen.
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "27 4 * * 1"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write # upload findings to the Security tab
+      contents: read
+      actions: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+          # Adds queries beyond the default set — more findings, and more noise
+          # to triage. Worth it for a template other people will copy.
+          queries: security-and-quality
+
+      # No build step: JavaScript and TypeScript are analyzed from source, so
+      # there is nothing to compile first.
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:javascript-typescript"

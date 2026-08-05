@@ -27,7 +27,24 @@ Under construction. Working through the plan in order:
 ## Contributing
 
 `main` is protected by the "Protect main" ruleset: pull requests only, no
-force-push, no deletion. All work goes branch → commit → push → PR.
+force-push, no deletion, and `typecheck` + `build` must pass with the branch up
+to date. All work goes branch → commit → push → PR.
+
+CI runs on every pull request:
+
+| Check | What it protects against |
+| --- | --- |
+| `typecheck` | Type errors, fast, before anything is compiled |
+| `build` | A production build that doesn't come out |
+| `actionlint` | Broken workflow YAML, caught before it misfires |
+| `dependency-review` | A PR pulling in a dependency with a known vulnerability |
+| `CodeQL` | Injection and similar classes of bug, plus a weekly scheduled scan |
+
+Dependabot proposes grouped dependency and action updates weekly. Secret
+scanning with push protection is on, so a committed credential is rejected at
+push time rather than discovered later.
+
+There is no linter configured, deliberately — see the notes at the end.
 
 ## Requirements
 
