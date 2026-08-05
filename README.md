@@ -17,7 +17,7 @@ to need fixing. Working through it in order:
 
 - [x] Next.js App Router skeleton
 - [x] Vendor Sorbet and render something from it
-- [ ] Theme + provider wiring
+- [x] Theme + provider wiring
 - [ ] Contentful space and credentials
 - [ ] Content model as code, and the sync script
 - [ ] Template format and the seeding engine

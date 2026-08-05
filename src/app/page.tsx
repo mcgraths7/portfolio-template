@@ -2,6 +2,8 @@ import { Button, Heading, Lead, Text } from "@sorbet/component-library/atoms";
 import { Cluster, Container, Stack } from "@sorbet/component-library/layout";
 import { Card, CardBody, Tab, TabList, TabPanel, Tabs } from "@sorbet/component-library/molecules";
 
+import { ThemeControl } from "./theme-control";
+
 /**
  * Smoke page. No "use client" here on purpose — this is a Server Component,
  * and it stays one. It proves both halves of the boundary at once:
@@ -23,6 +25,9 @@ export default function Home() {
           <Lead>
             Sorbet is vendored and rendering. Everything above the tabs is a Server Component.
           </Lead>
+          {/* A client island rendered from a Server Component, same as Tabs
+              below: useTheme needs the context, this page does not. */}
+          <ThemeControl />
         </Stack>
 
         <Card>

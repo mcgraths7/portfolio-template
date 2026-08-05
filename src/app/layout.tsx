@@ -7,6 +7,8 @@ import "@sorbet/design-system/css";
 import "@sorbet/design-system/themes/midnight.css";
 
 import "./globals.css";
+import { Providers } from "./providers";
+import { ThemeScript } from "./theme-script";
 
 // No next/font here on purpose: Sorbet's type scale and font stacks are design
 // tokens, so typography arrives with the theme rather than being wired up per
@@ -19,8 +21,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    // suppressHydrationWarning: ThemeScript sets data-theme on this element
+    // before React hydrates, so the DOM legitimately differs from what the
+    // server rendered. It suppresses the warning for this element's own
+    // attributes only, not for anything in the tree below.
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <ThemeScript />
+      </head>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
