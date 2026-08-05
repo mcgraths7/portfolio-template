@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+# Supersede in-flight runs for the same ref (a new push to a PR cancels the old).
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Least privilege: every job only reads the repo.
+permissions:
+  contents: read
+
+jobs:
+  # `next build` type-checks on its way through, but it does so after compiling.
+  # Running tsc on its own first turns a type error into a ~30s failure instead
+  # of a slower one, and shows up as its own check. The typecheck script runs
+  # `next typegen` first because types like LayoutProps are generated into
+  # .next/types, which is gitignored — so a fresh checkout has none.
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Type-check
+        run: pnpm run typecheck
+
+  build:
+    needs: [typecheck]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      # --frozen-lockfile also proves the vendored Sorbet tarballs resolve from
+      # a clean checkout: no registry, no auth, just what is committed here.
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm run build

@@ -24,6 +24,11 @@ Under construction. Working through the plan in order:
 - [ ] The four persona templates
 - [ ] SEO, draft preview, deploy
 
+## Contributing
+
+`main` is protected by the "Protect main" ruleset: pull requests only, no
+force-push, no deletion. All work goes branch → commit → push → PR.
+
 ## Requirements
 
 Node 24 (see `.nvmrc`) and pnpm via corepack.
