@@ -11,7 +11,9 @@ writer — so a new portfolio is one command away from real content.
 
 ## Status
 
-Under construction. Working through the plan in order:
+Under construction. [`docs/PLAN.md`](docs/PLAN.md) is the working plan — the
+steps, what to verify in a browser at each one, and where Sorbet is most likely
+to need fixing. Working through it in order:
 
 - [x] Next.js App Router skeleton
 - [x] Vendor Sorbet and render something from it
