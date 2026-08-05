@@ -1,0 +1,41 @@
+version: 2
+
+updates:
+  # Application dependencies. The vendored Sorbet packages are `file:`
+  # specifiers, which Dependabot leaves alone — they are refreshed with
+  # `pnpm sync:sorbet`, not by a registry version bump.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    # One PR for the Next/React set rather than three that each need their own
+    # CI run and review, since these move together.
+    groups:
+      next:
+        patterns:
+          - "next"
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      types:
+        patterns:
+          - "@types/*"
+        exclude-patterns:
+          - "@types/react"
+          - "@types/react-dom"
+
+  # Actions pinned by major tag still drift; this is what keeps a deprecated
+  # runner or a superseded action from being noticed only when it breaks.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      actions:
+        patterns:
+          - "*"

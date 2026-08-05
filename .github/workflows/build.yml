@@ -18,6 +18,35 @@ permissions:
   contents: read
 
 jobs:
+  # Cheap, independent gates run in parallel so every failure is visible at once
+  # and shows up as its own check.
+
+  # Lints these workflow files themselves — a typo'd `runs-on` or a bad
+  # expression otherwise only surfaces when a run fails at the wrong moment.
+  actionlint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Lint workflow files
+        uses: docker://rhysd/actionlint:latest
+        with:
+          args: -color
+
+  # Fails a PR that introduces a dependency with a known vulnerability, at the
+  # moment it is proposed rather than after it is merged. Reviews the diff, so
+  # there is nothing to review on a push to main.
+  dependency-review:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Review dependency changes
+        uses: actions/dependency-review-action@v5
+
   # `next build` type-checks on its way through, but it does so after compiling.
   # Running tsc on its own first turns a type error into a ~30s failure instead
   # of a slower one, and shows up as its own check. The typecheck script runs
