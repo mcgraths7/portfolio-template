@@ -77,7 +77,7 @@ Two traps found here, both now guarded and documented:
 | --- | --- | --- |
 | 4 | Next.js App Router skeleton, Sorbet-ready | done |
 | 5 | Vendor Sorbet, render across the RSC boundary | done |
-| 6 | Theme + provider wiring | in progress |
+| 6 | Theme + provider wiring | done |
 
 ### 6. Theme + provider wiring
 
@@ -96,9 +96,17 @@ guide suggests one — it assumes a different CSS shape.
 > the console; page content still present in `curl` output, proving the client
 > boundary didn't swallow the server tree; all three modes actually switch.
 >
-> **Sorbet risk:** `ThemeProvider` and `ToastProvider` both mount here.
-> `ToastProvider` already needed [sorbet#70](https://github.com/mcgraths7/sorbet/pull/70)
-> for portalling to `document.body` during render.
+> **Sorbet risk:** realised twice. `ToastProvider` needed
+> [sorbet#70](https://github.com/mcgraths7/sorbet/pull/70) for portalling to
+> `document.body` during render, and `ThemeProvider` needed
+> [sorbet#71](https://github.com/mcgraths7/sorbet/pull/71) for reading
+> `localStorage` in a `useState` initializer — a hydration mismatch that left
+> the theme control showing "System" while the stored choice was "Light".
+>
+> The second one is the instructive one: it threw nothing, logged nothing
+> obvious, and built clean. Only comparing the control against storage in a
+> browser found it. Expect more of this shape, and check state against its
+> source rather than trusting that a page looks right.
 
 ## Phase 2 — Contentful foundation
 

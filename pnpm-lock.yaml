@@ -263,7 +263,7 @@ packages:
     os: [win32]
 
   '@sorbet/component-library@file:vendor/sorbet-component-library-0.1.0.tgz':
-    resolution: {integrity: sha512-iML0ImM/k/V8ulQnOwZ5m11tnz+3+O8m5N8YEuE04oC0MRTWS6tpHaEij38x93rv+bV5Q8qDzfyXiUcEUJF5sw==, tarball: file:vendor/sorbet-component-library-0.1.0.tgz}
+    resolution: {integrity: sha512-D9ZQQDpsQCpmIlvfDSdnnDhG+eKbicmWJ2Ot5Ec1/+CYHJQr9fdeAds/zniWyKfwaCo1INL9rx/y+S87rLDosQ==, tarball: file:vendor/sorbet-component-library-0.1.0.tgz}
     version: 0.1.0
     peerDependencies:
       react: ^19.0.0
