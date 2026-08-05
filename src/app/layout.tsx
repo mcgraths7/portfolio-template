@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 
+// The system stylesheet once, then one preset theme. A real site picks the
+// preset its persona template calls for; swapping presets is swapping this
+// import. Both must come before globals.css so app-level rules win.
+import "@sorbet/design-system/css";
+import "@sorbet/design-system/themes/midnight.css";
+
 import "./globals.css";
 
 // No next/font here on purpose: Sorbet's type scale and font stacks are design

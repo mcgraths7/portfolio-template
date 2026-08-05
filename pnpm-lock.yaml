@@ -4,10 +4,19 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@sorbet/design-system': file:./vendor/sorbet-design-system-0.1.0.tgz
+
 importers:
 
   .:
     dependencies:
+      '@sorbet/component-library':
+        specifier: file:./vendor/sorbet-component-library-0.1.0.tgz
+        version: file:vendor/sorbet-component-library-0.1.0.tgz(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@sorbet/design-system':
+        specifier: file:vendor/sorbet-design-system-0.1.0.tgz
+        version: file:vendor/sorbet-design-system-0.1.0.tgz
       next:
         specifier: 16.3.0
         version: 16.3.0(@types/node@24.13.3)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -252,6 +261,17 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
+
+  '@sorbet/component-library@file:vendor/sorbet-component-library-0.1.0.tgz':
+    resolution: {integrity: sha512-iML0ImM/k/V8ulQnOwZ5m11tnz+3+O8m5N8YEuE04oC0MRTWS6tpHaEij38x93rv+bV5Q8qDzfyXiUcEUJF5sw==, tarball: file:vendor/sorbet-component-library-0.1.0.tgz}
+    version: 0.1.0
+    peerDependencies:
+      react: ^19.0.0
+      react-dom: ^19.0.0
+
+  '@sorbet/design-system@file:vendor/sorbet-design-system-0.1.0.tgz':
+    resolution: {integrity: sha512-KwDXIdV2LryQ6wyX4j0S4kbEtgF4W0cEJk8gMpC/ZZCKbUjawN4/ds4/7bh5dZqIKGzXQzLtNN7mQNJ+s/azZw==, tarball: file:vendor/sorbet-design-system-0.1.0.tgz}
+    version: 0.1.0
 
   '@swc/helpers@0.5.15':
     resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
@@ -511,6 +531,14 @@ snapshots:
 
   '@next/swc-win32-x64-msvc@16.3.0':
     optional: true
+
+  '@sorbet/component-library@file:vendor/sorbet-component-library-0.1.0.tgz(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+    dependencies:
+      '@sorbet/design-system': file:vendor/sorbet-design-system-0.1.0.tgz
+      react: 19.2.8
+      react-dom: 19.2.8(react@19.2.8)
+
+  '@sorbet/design-system@file:vendor/sorbet-design-system-0.1.0.tgz': {}
 
   '@swc/helpers@0.5.15':
     dependencies:

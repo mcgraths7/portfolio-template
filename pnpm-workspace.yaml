@@ -1,3 +1,14 @@
 allowBuilds:
   sharp: false
   unrs-resolver: false
+
+# Sorbet is vendored as tarballs (see vendor/), not installed from a registry.
+# `pnpm pack` rewrites the component library's `workspace:*` dependency on the
+# design system to a plain "0.1.0", so without this redirect pnpm goes looking
+# for it on npm — where it isn't published — and the install 404s.
+#
+# This has to live here: pnpm 11 reads `overrides` from pnpm-workspace.yaml and
+# ignores them in package.json with only a warning. For the same reason, never
+# install with --ignore-workspace, which skips this file entirely.
+overrides:
+  "@sorbet/design-system": "file:./vendor/sorbet-design-system-0.1.0.tgz"

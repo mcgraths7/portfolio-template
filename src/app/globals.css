@@ -8,11 +8,3 @@
  * usually a sign the composition wants fixing rather than overriding.
  */
 
-/*
- * Interim: with no color-scheme declared, the placeholder page renders black
- * text on the UA's dark canvas. Sorbet's stylesheet sets this itself, so the
- * rule goes away once the theme is wired in.
- */
-html {
-  color-scheme: light dark;
-}

@@ -6,9 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "sync:sorbet": "pnpm --dir ${SORBET_DIR:-../sorbet} pack:vendor --to \"$PWD/vendor\" && pnpm install"
   },
   "dependencies": {
+    "@sorbet/component-library": "file:./vendor/sorbet-component-library-0.1.0.tgz",
+    "@sorbet/design-system": "file:./vendor/sorbet-design-system-0.1.0.tgz",
     "next": "16.3.0",
     "react": "19.2.8",
     "react-dom": "19.2.8"
