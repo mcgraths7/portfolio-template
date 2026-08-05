@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen && tsc --noEmit",
     "sync:sorbet": "pnpm --dir ${SORBET_DIR:-../sorbet} pack:vendor --to \"$PWD/vendor\" && pnpm install"
   },
   "dependencies": {
