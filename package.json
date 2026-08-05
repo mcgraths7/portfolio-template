@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "next": "16.3.0",
@@ -13,10 +14,14 @@
     "react-dom": "19.2.8"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^24.10.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "typescript": "^5"
   },
-  "packageManager": "pnpm@11.17.0"
+  "packageManager": "pnpm@11.17.0",
+  "description": "A CMS-driven portfolio template built with the Sorbet design system.",
+  "engines": {
+    "node": ">=24.17.0"
+  }
 }
