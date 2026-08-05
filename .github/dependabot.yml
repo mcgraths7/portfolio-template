@@ -1,5 +1,24 @@
 version: 2
 
+# One rule decides what gets ignored here: a major update is noise when the
+# version is DERIVED from something already pinned, and signal when it is a
+# genuine decision.
+#
+#   derived  — @types/* must describe the runtime or library actually installed.
+#              A newer major type package describes APIs that do not exist here,
+#              so it type-checks green and fails at runtime. Ignored below.
+#   decision — next, typescript, react. These need review and sometimes real
+#              work, but the PR is worth having. TypeScript 7, for instance,
+#              rejects our side-effect CSS import: that is a task, not noise.
+#
+# Not managed here: pnpm. It is pinned by the `packageManager` field for
+# corepack, which Dependabot's npm ecosystem does not read — no PR has ever been
+# raised for it despite newer releases. Bump it by hand, together with the
+# `packageManager` field in the Sorbet repo so the two stay in step.
+#
+# Node itself is pinned by .nvmrc and `engines`. CI reads .nvmrc via
+# `node-version-file`, so there is no version to drift in the workflows either.
+
 updates:
   # Application dependencies. The vendored Sorbet packages are `file:`
   # specifiers, which Dependabot leaves alone — they are refreshed with
@@ -10,8 +29,29 @@ updates:
       interval: weekly
       day: monday
     open-pull-requests-limit: 5
-    # One PR for the Next/React set rather than three that each need their own
+
+    ignore:
+      # Must track the Node in .nvmrc (24.x). @types/node 26 describes APIs that
+      # are absent from the Node we run and CI runs, so it would type-check
+      # green and throw at runtime. Raise this deliberately, alongside .nvmrc
+      # and `engines`, when the runtime moves.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+
+      # Must track React's major, which is 19. Types ahead of the library they
+      # describe have the same failure mode as above.
+      - dependency-name: "@types/react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/react-dom"
+        update-types: ["version-update:semver-major"]
+
+    # One PR for the Next/React set rather than several that each need their own
     # CI run and review, since these move together.
+    #
+    # A React major will be proposed and will fail: the vendored Sorbet
+    # component library peer-depends on react ^19.0.0, so Sorbet has to widen
+    # that range first. That PR is the reminder to go and do it, which is why it
+    # is not ignored.
     groups:
       next:
         patterns:

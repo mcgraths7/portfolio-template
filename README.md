@@ -42,9 +42,16 @@ CI runs on every pull request:
 | `dependency-review` | A PR pulling in a dependency with a known vulnerability |
 | `CodeQL` | Injection and similar classes of bug, plus a weekly scheduled scan |
 
-Dependabot proposes grouped dependency and action updates weekly. Secret
-scanning with push protection is on, so a committed credential is rejected at
-push time rather than discovered later.
+Dependabot proposes grouped dependency and action updates weekly. Major updates
+to `@types/*` packages are ignored, because those versions are derived rather
+than chosen — they must describe the Node in `.nvmrc` and the React actually
+installed, and running ahead of either type-checks green then fails at runtime.
+Majors for `next`, `react` and `typescript` are still proposed: those are
+decisions worth surfacing. pnpm is pinned by `packageManager` for corepack,
+which Dependabot does not manage — bump it by hand.
+
+Secret scanning with push protection is on, so a committed credential is
+rejected at push time rather than discovered later.
 
 There is no linter configured, deliberately — see the notes at the end.
 
