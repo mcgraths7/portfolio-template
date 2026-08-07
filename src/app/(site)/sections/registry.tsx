@@ -1,7 +1,17 @@
 import { Alert } from "@sorbet/component-library/molecules";
 
+import { AboutSection } from "./about";
+import { ContactSection } from "./contact";
+import { CtaSection } from "./cta";
+import { ExperienceSection } from "./experience";
+import { GallerySection } from "./gallery";
 import { HeroSection } from "./hero";
+import { LogoWallSection } from "./logo-wall";
 import { ProjectGridSection } from "./project-grid";
+import { SkillsSection } from "./skills";
+import { StatsSection } from "./stats";
+import { TestimonialsSection } from "./testimonials";
+import { WritingSection } from "./writing";
 
 import type { PageSection } from "../../../../sanity/lib/fetch";
 import type { ComponentType, ReactNode } from "react";
@@ -19,9 +29,9 @@ import type { ComponentType, ReactNode } from "react";
  * doesn't project is a compile error here, so the registry can never claim to
  * render data it won't receive.
  *
- * Entries are optional while item 15 fills the remaining ten in. A section
- * type without an entry renders loudly in development and vanishes in
- * production — an editor's draft section should never crash a live site.
+ * All twelve types are registered; the optionality and the loud dev fallback
+ * below stay, because a NEW schema section type lands here before its renderer
+ * does — an editor's draft section should never crash a live site.
  */
 type Registry = {
   [T in PageSection["_type"]]?: ComponentType<{ section: Extract<PageSection, { _type: T }> }>;
@@ -29,7 +39,17 @@ type Registry = {
 
 const registry: Registry = {
   sectionHero: HeroSection,
+  sectionAbout: AboutSection,
   sectionProjectGrid: ProjectGridSection,
+  sectionGallery: GallerySection,
+  sectionExperience: ExperienceSection,
+  sectionSkills: SkillsSection,
+  sectionWriting: WritingSection,
+  sectionTestimonials: TestimonialsSection,
+  sectionLogoWall: LogoWallSection,
+  sectionStats: StatsSection,
+  sectionContact: ContactSection,
+  sectionCta: CtaSection,
 };
 
 export function renderSection(section: PageSection): ReactNode {

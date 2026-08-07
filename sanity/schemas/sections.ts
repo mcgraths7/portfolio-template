@@ -119,7 +119,7 @@ export const sectionSkills = defineType({
   title: "Skills",
   type: "object",
   fields: [
-    variantField(["chips", "grouped", "meters"]),
+    variantField(["chips", "grouped", "columns"]),
     headingField,
     defineField({
       name: "groups",
