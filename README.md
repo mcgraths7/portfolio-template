@@ -55,6 +55,20 @@ which Dependabot does not manage — bump it by hand.
 Secret scanning with push protection is on, so a committed credential is
 rejected at push time rather than discovered later.
 
+### Where credentials live
+
+One rule: **the Editor token never leaves `.env.local`.** Seeding is a local,
+human-triggered operation, and that token can destroy content — it belongs on
+exactly one machine, in a gitignored file.
+
+Nothing else needs secrecy or CI. Published reads are anonymous, the project ID
+ships in the client bundle by design, and the build is hermetic when
+unconfigured — so GitHub Actions holds **no secrets at all**, which on a public
+repository is a feature, not an omission. At deploy time (Vercel), set only the
+two `NEXT_PUBLIC_*` vars; when draft preview lands it gets a separate
+**Viewer**-scope token in Vercel's env store — a leaked viewer token exposes
+drafts, it cannot destroy anything.
+
 There is no linter configured, deliberately — see the notes at the end.
 
 ## Requirements
