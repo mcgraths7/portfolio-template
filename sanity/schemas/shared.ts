@@ -1,4 +1,4 @@
-import { defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType } from "sanity";
 
 /**
  * `variant` is the mechanism the whole architecture rests on: the CMS picks a
@@ -63,6 +63,23 @@ export function imageField(name = "image", title?: string) {
     ],
   });
 }
+
+/**
+ * An image as an array member (gallery cells, logo walls), hotspot on and an
+ * alt beside it. Same contract as imageField — the a11y story cannot depend on
+ * whether an image happens to live in a field or an array.
+ */
+export const imageMember = defineArrayMember({
+  type: "image",
+  options: { hotspot: true },
+  fields: [
+    defineField({
+      name: "alt",
+      type: "string",
+      description: "Describe the image for screen readers. Leave empty only if decorative.",
+    }),
+  ],
+});
 
 /** A call to action. Registered once and referenced by hero, CTA and contact. */
 export const linkObject = defineType({

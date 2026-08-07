@@ -1,6 +1,6 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 
-import { headingField, imageField, introField, variantField } from "./shared";
+import { headingField, imageField, imageMember, introField, variantField } from "./shared";
 
 /**
  * The twelve section types. Each is an object that appears in a page's
@@ -84,7 +84,7 @@ export const sectionGallery = defineType({
     defineField({
       name: "images",
       type: "array",
-      of: [defineArrayMember({ type: "image", options: { hotspot: true } })],
+      of: [imageMember],
       validation: (rule) => rule.min(1),
     }),
   ],
@@ -176,7 +176,7 @@ export const sectionLogoWall = defineType({
     defineField({
       name: "logos",
       type: "array",
-      of: [defineArrayMember({ type: "image" })],
+      of: [imageMember],
       validation: (rule) => rule.min(1),
     }),
   ],
