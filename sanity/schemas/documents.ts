@@ -1,6 +1,6 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 
-import { imageField } from "./shared";
+import { imageField, imageMember } from "./shared";
 import { SECTION_TYPES } from "./type-names";
 
 /** The five Sorbet presets. A persona template picks one. */
@@ -104,7 +104,7 @@ export const project = defineType({
     defineField({
       name: "gallery",
       type: "array",
-      of: [defineArrayMember({ type: "image", options: { hotspot: true } })],
+      of: [imageMember],
     }),
     defineField({ name: "body", type: "array", of: [defineArrayMember({ type: "block" })] }),
   ],
