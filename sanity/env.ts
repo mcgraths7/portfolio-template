@@ -15,5 +15,15 @@
 export const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? "placeholder";
 export const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
 
+/**
+ * False until someone fills .env.local (or deploy-time env). The site renders
+ * a setup notice instead of fetching, so `pnpm build` succeeds on a fresh
+ * clone with no Sanity project — a template must not demand credentials just
+ * to compile. When this IS true and a fetch still fails, that failure stays
+ * loud: a configured site that cannot reach its content should fail its build,
+ * not ship empty.
+ */
+export const isConfigured = projectId !== "placeholder";
+
 /** Pinned to a date, so the API shape cannot change under the app. */
 export const apiVersion = "2026-08-01";

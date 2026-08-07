@@ -1,77 +1,54 @@
-import { Button, Heading, Lead, Text } from "@sorbet/component-library/atoms";
+import { Text } from "@sorbet/component-library/atoms";
 import { Cluster, Container, Stack } from "@sorbet/component-library/layout";
-import { Card, CardBody, Tab, TabList, TabPanel, Tabs } from "@sorbet/component-library/molecules";
+import { EmptyState } from "@sorbet/component-library/molecules";
+import { AppShell, AppShellHeader, AppShellMain } from "@sorbet/component-library/templates";
 
+import { isConfigured } from "../../../sanity/env";
+import { getPage, getSiteSettings } from "../../../sanity/lib/fetch";
+import { renderSection } from "./sections/registry";
 import { ThemeControl } from "./theme-control";
 
 /**
- * Smoke page. No "use client" here on purpose — this is a Server Component,
- * and it stays one. It proves both halves of the boundary at once:
- *
- *   - Container, Stack, Heading, Lead, Text, Card and a link-flavoured Button
- *     render on the server, shipping no JavaScript.
- *   - Tabs is a client component. A Server Component may render it because it
- *     is used uncontrolled — `defaultValue` is a string, not a callback, so
- *     nothing unserializable crosses the boundary.
- *
- * Replaced by the CMS-driven renderer once the content model exists.
+ * The home page, rendered entirely from the CMS: `page.sections` decides what
+ * appears and in what order, the registry decides what each section looks
+ * like. This file only fetches and hands off — it knows nothing about any
+ * section type, which is what keeps adding one a registry-only change.
  */
-export default function Home() {
+export default async function Home() {
+  // Unconfigured (no .env.local, e.g. a fresh clone or CI) renders the setup
+  // notice without touching the network, so the build is hermetic. A
+  // CONFIGURED site whose fetch fails still fails the build loudly — see
+  // sanity/env.ts.
+  const [settings, page] = isConfigured
+    ? await Promise.all([getSiteSettings(), getPage("home")])
+    : [null, null];
+
   return (
-    <Container>
-      <Stack gap={8}>
-        <Stack gap={3}>
-          <Heading level={1}>Portfolio template</Heading>
-          <Lead>
-            Sorbet is vendored and rendering. Everything above the tabs is a Server Component.
-          </Lead>
-          {/* A client island rendered from a Server Component, same as Tabs
-              below: useTheme needs the context, this page does not. */}
-          <ThemeControl />
-        </Stack>
+    <AppShell>
+      <AppShellHeader>
+        <Container>
+          <Cluster justify="between" align="center" gap={4}>
+            <Text as="span" weight="semibold">
+              {settings?.name ?? "Portfolio"}
+            </Text>
+            <ThemeControl />
+          </Cluster>
+        </Container>
+      </AppShellHeader>
 
-        <Card>
-          <CardBody>
-            <Stack gap={4}>
-              <Heading level={2}>Server-rendered</Heading>
-              <Text>
-                This card, its heading and this paragraph ship as HTML with no client bundle.
-              </Text>
-              {/* Cluster, not Stack: Stack stretches its children, and a button
-                  should be its own width. Layout owns placement. */}
-              <Cluster gap={3}>
-                <Button as="a" href="https://github.com/mcgraths7/sorbet">
-                  A link-flavoured Button
-                </Button>
-              </Cluster>
-            </Stack>
-          </CardBody>
-        </Card>
-
-        <Card>
-          <CardBody>
-            <Stack gap={4}>
-              <Heading level={2}>Client island</Heading>
-              <Text>
-                Tabs carries its own &quot;use client&quot; boundary, so this Server Component can
-                render it without becoming one.
-              </Text>
-              <Tabs defaultValue="one">
-                <TabList>
-                  <Tab value="one">First</Tab>
-                  <Tab value="two">Second</Tab>
-                </TabList>
-                <TabPanel value="one">
-                  <Text>If this panel switches when you click, hydration worked.</Text>
-                </TabPanel>
-                <TabPanel value="two">
-                  <Text>Second panel. The boundary holds.</Text>
-                </TabPanel>
-              </Tabs>
-            </Stack>
-          </CardBody>
-        </Card>
-      </Stack>
-    </Container>
+      <AppShellMain>
+        <Container>
+          {page ? (
+            <Stack gap={16}>{page.sections?.map(renderSection)}</Stack>
+          ) : (
+            <EmptyState title={isConfigured ? "No content yet" : "Not connected to Sanity yet"}>
+              {isConfigured
+                ? "The dataset has no published “home” page. Seed one with `pnpm seed software-engineer`, or create a page in the Studio at /studio."
+                : "Copy .env.example to .env.local and fill in your Sanity project ID, then restart. The build works without it; the content needs it."}
+            </EmptyState>
+          )}
+        </Container>
+      </AppShellMain>
+    </AppShell>
   );
 }

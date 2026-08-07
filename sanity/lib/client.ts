@@ -12,6 +12,11 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true,
+  // The CDN caches responses for up to a minute — right for production (a
+  // static build fetches once; item 18's webhook revalidates), wrong for
+  // development, where a Studio edit should appear on the next reload rather
+  // than whenever the cache expires. Found empirically: the reorder round-trip
+  // test sat stale for ~30s behind the CDN.
+  useCdn: process.env.NODE_ENV === "production",
   perspective: "published",
 });
