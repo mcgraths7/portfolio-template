@@ -14,3 +14,11 @@ allowBuilds:
 # install with --ignore-workspace, which skips this file entirely.
 overrides:
   "@sorbet/design-system": "file:./vendor/sorbet-design-system-0.1.0.tgz"
+
+  # sanity → @sanity/cli → @vercel/frameworks pins js-yaml 3.13.1, which carries
+  # four advisories including two high-severity quadratic-CPU DoS. 3.15.1 is the
+  # backported fix for the 3.x line, so this stays on the same major and leaves
+  # @vercel/frameworks' API expectations intact. Drop this once the upstream
+  # chain moves on its own — Dependabot will not do it for us, since the
+  # constraint lives three levels down someone else's tree.
+  js-yaml: "^3.15.1"
