@@ -2272,14 +2272,14 @@ packages:
     engines: {node: '>=18'}
 
   '@sorbet/component-library@file:vendor/sorbet-component-library-0.1.0.tgz':
-    resolution: {integrity: sha512-D9ZQQDpsQCpmIlvfDSdnnDhG+eKbicmWJ2Ot5Ec1/+CYHJQr9fdeAds/zniWyKfwaCo1INL9rx/y+S87rLDosQ==, tarball: file:vendor/sorbet-component-library-0.1.0.tgz}
+    resolution: {integrity: sha512-uXL6ZRz0uKsXvqxLYFbanaOT5F9GDfyuxeEjQVTSEgp9OrOCGkr8xWggdYFunZ0xQN01Q0HTXa97cJc5kqgofA==, tarball: file:vendor/sorbet-component-library-0.1.0.tgz}
     version: 0.1.0
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
 
   '@sorbet/design-system@file:vendor/sorbet-design-system-0.1.0.tgz':
-    resolution: {integrity: sha512-KwDXIdV2LryQ6wyX4j0S4kbEtgF4W0cEJk8gMpC/ZZCKbUjawN4/ds4/7bh5dZqIKGzXQzLtNN7mQNJ+s/azZw==, tarball: file:vendor/sorbet-design-system-0.1.0.tgz}
+    resolution: {integrity: sha512-uWkzTbR4Z/HzrYfk9CZAMnt0W+TLtiZD9vgMBBKGupc/kdYHsRI/P8k1NK3RATBxaXczLvKEElCnly0CFdtdvw==, tarball: file:vendor/sorbet-design-system-0.1.0.tgz}
     version: 0.1.0
 
   '@swc/helpers@0.5.15':

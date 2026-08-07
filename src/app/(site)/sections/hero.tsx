@@ -1,5 +1,5 @@
 import { Button, Heading, Lead, Overline } from "@sorbet/component-library/atoms";
-import { Center, Cluster, Frame, Grid, Stack } from "@sorbet/component-library/layout";
+import { Center, Cluster, Frame, Grid, Layer, LayerContent, Stack } from "@sorbet/component-library/layout";
 
 import { hasAsset, imageUrl } from "../../../../sanity/lib/image";
 
@@ -12,9 +12,10 @@ type Hero = Extract<PageSection, { _type: "sectionHero" }>;
  * is a different arrangement of the same Sorbet primitives, which is exactly
  * what `variant` exists to prove.
  *
- * fullBleed is interpreted as an edge-to-edge image with the text beneath it:
- * a text-over-image treatment needs a layering primitive Sorbet doesn't have
- * yet, and the rule is to log that gap upstream rather than hand-roll CSS here.
+ * fullBleed stacks the text over the image with Layer — the primitive this
+ * template's first version was missing (sorbet#79 → #80). The scrim stays on:
+ * no build gate can measure contrast against an arbitrary CMS photo, so the
+ * text sits on a known dark wash rather than on whatever gets uploaded.
  */
 export function HeroSection({ section }: { section: Hero }) {
   const { variant, eyebrow, heading, lead, image, actions } = section;
@@ -76,11 +77,25 @@ export function HeroSection({ section }: { section: Hero }) {
       );
 
     case "fullBleed":
+      // No image in the CMS degrades to the centered treatment rather than an
+      // empty band — a Layer with nothing behind the text is just a worse
+      // Center.
+      if (!hasAsset(image)) {
+        return (
+          <Center as="header" intrinsic>
+            {text(true)}
+          </Center>
+        );
+      }
       return (
-        <Stack as="header" gap={8}>
-          {picture("21 / 9", 1600)}
-          <Center intrinsic>{text(true)}</Center>
-        </Stack>
+        <Layer as="header" place="center" scrim round>
+          <Frame ratio="21 / 9">
+            <img src={imageUrl(image, 1600)} alt={image.alt ?? ""} />
+          </Frame>
+          <LayerContent>
+            <Center intrinsic>{text(true)}</Center>
+          </LayerContent>
+        </Layer>
       );
   }
 }
