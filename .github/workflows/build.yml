@@ -73,6 +73,12 @@ jobs:
       - name: Type-check
         run: pnpm run typecheck
 
+      # Validates the Sanity schema AND asserts the validator actually saw our
+      # types — "0 errors" means the same thing whether the schema is clean or
+      # the CLI loaded no schema at all.
+      - name: Check schema
+        run: pnpm run check:schema
+
   build:
     needs: [typecheck]
     runs-on: ubuntu-latest

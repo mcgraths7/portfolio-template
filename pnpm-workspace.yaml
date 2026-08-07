@@ -1,4 +1,6 @@
 allowBuilds:
+  # Sanity Studio bundles with esbuild, which links a native binary on install.
+  esbuild: true
   sharp: false
   unrs-resolver: false
 
@@ -12,3 +14,32 @@ allowBuilds:
 # install with --ignore-workspace, which skips this file entirely.
 overrides:
   "@sorbet/design-system": "file:./vendor/sorbet-design-system-0.1.0.tgz"
+
+  # sanity → @sanity/cli → @vercel/frameworks pins js-yaml 3.13.1, which carries
+  # four advisories including two high-severity quadratic-CPU DoS. 3.15.1 is the
+  # backported fix for the 3.x line, so this stays on the same major and leaves
+  # @vercel/frameworks' API expectations intact. Drop this once the upstream
+  # chain moves on its own — Dependabot will not do it for us, since the
+  # constraint lives three levels down someone else's tree.
+  js-yaml: "^3.15.1"
+
+  # sanity → @sanity/workbench-cli → @module-federation/vite pins undici 7.28.0,
+  # which carries five advisories including a high-severity cross-user cache
+  # disclosure. 7.29.0 is the fix for the 7.x line.
+  #
+  # Scoped to the 7 range on purpose: the CLI also pulls undici 6 through
+  # @actions/github, and an unscoped override would drag that to a new major
+  # its consumers were never written against.
+  undici@7: "^7.29.0"
+
+  # @vercel/frameworks pins smol-toml 1.5.2 (DoS via heavily commented TOML).
+  # 1.7.1 is the fix, and @sanity/cli already depends on it directly, so the
+  # version is proven in this tree rather than assumed.
+  smol-toml: "^1.7.1"
+
+  # typeid-js pins uuid 10.0.0, whose v3/v5/v6 functions miss a buffer bounds
+  # check. There is no patched 10.x — 10.0.0 is the last of the line — so this
+  # crosses a major, which is worth justifying: typeid-js calls only v7, parse
+  # and stringify, all unchanged in v11. The vulnerable functions were never
+  # reachable; bumping removes the finding rather than suppressing it.
+  uuid@10: "^11.1.1"

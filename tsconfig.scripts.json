@@ -1,0 +1,16 @@
+{
+  // Node scripts, not app code. They run through Node's type stripping rather
+  // than a bundler, so relative imports need explicit .ts extensions — which
+  // the app's tsconfig rightly rejects. Separate config, still type-checked.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "noEmit": true,
+    "types": ["node"],
+    "plugins": []
+  },
+  "include": ["scripts/**/*.ts", "sanity/schemas/type-names.ts"],
+  "exclude": ["node_modules"]
+}
