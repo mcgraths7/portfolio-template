@@ -1,6 +1,7 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 import { imageField } from "./shared";
+import { SECTION_TYPES } from "./type-names";
 
 /** The five Sorbet presets. A persona template picks one. */
 const SORBET_PRESETS = ["sorbet", "ocean", "forest", "noir", "midnight"] as const;
@@ -43,25 +44,6 @@ export const siteSettings = defineType({
   ],
   preview: { select: { title: "name", subtitle: "tagline" } },
 });
-
-/**
- * The section types a page may contain. Declared here rather than in
- * sections.ts so adding one is a single edit next to the field that uses it.
- */
-export const SECTION_TYPES = [
-  "sectionHero",
-  "sectionAbout",
-  "sectionProjectGrid",
-  "sectionGallery",
-  "sectionExperience",
-  "sectionSkills",
-  "sectionWriting",
-  "sectionTestimonials",
-  "sectionLogoWall",
-  "sectionStats",
-  "sectionContact",
-  "sectionCta",
-] as const;
 
 /**
  * The page. `sections` is the whole point: an ordered array of section blocks

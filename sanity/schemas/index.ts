@@ -33,4 +33,4 @@ export const schemaTypes = [
   linkObject,
 ];
 
-export { SECTION_TYPES } from "./documents";
+export { DOCUMENT_TYPES, OBJECT_TYPES, SECTION_TYPES } from "./type-names";
