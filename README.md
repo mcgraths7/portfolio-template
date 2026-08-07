@@ -1,8 +1,8 @@
 # portfolio-template
 
-A CMS-driven portfolio template. [Contentful](https://www.contentful.com)
-dictates both the **content** and the **page layout**; the code maps each
-section's content type and `variant` onto a composition of
+A CMS-driven portfolio template. [Sanity](https://www.sanity.io) dictates both
+the **content** and the **page layout**; the code maps each section's type and
+`variant` onto a composition of
 [Sorbet](https://github.com/mcgraths7/sorbet) components.
 
 A scaffold script stands the content model up from scratch and seeds it from a
@@ -18,8 +18,8 @@ to need fixing. Working through it in order:
 - [x] Next.js App Router skeleton
 - [x] Vendor Sorbet and render something from it
 - [x] Theme + provider wiring
-- [ ] Contentful space and credentials
-- [ ] Content model as code, and the sync script
+- [ ] Sanity project and credentials
+- [ ] Schema in code, Studio embedded at /studio
 - [ ] Template format and the seeding engine
 - [ ] Fetch layer
 - [ ] Section registry and the sections themselves

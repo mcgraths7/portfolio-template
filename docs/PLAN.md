@@ -1,13 +1,13 @@
 # Build plan
 
-A Contentful-driven portfolio template powered by [Sorbet](https://github.com/mcgraths7/sorbet).
+A CMS-driven portfolio template powered by [Sorbet](https://github.com/mcgraths7/sorbet).
 The CMS dictates **page layout** — which sections, in what order, in which
 variant — as well as **content**. A scaffold script stands the content model up
 and seeds it from a named persona template.
 
 **Decisions:** vendored tarballs for distribution · Next.js App Router ·
-Contentful · four personas (software engineer, graphic designer, photographer,
-writer/editor).
+Sanity (see Phase 2 for why it replaced Contentful) · four personas (software
+engineer, graphic designer, photographer, writer/editor).
 
 ---
 
@@ -108,71 +108,99 @@ guide suggests one — it assumes a different CSS shape.
 > browser found it. Expect more of this shape, and check state against its
 > source rather than trusting that a page looks right.
 
-## Phase 2 — Contentful foundation
+## Phase 2 — Sanity foundation
 
-### 7. Space + credentials
+Contentful was the original choice; Sanity replaced it at this point, before any
+CMS-specific code existed. The reason is that items 8–10 below were *machinery to
+work around Contentful* — a hand-built content model as code, an idempotent API
+sync script, and a type generator, all to get schema-as-code onto a platform that
+does not do it natively. Sanity defines schema in code as its normal mode, so
+that work mostly disappears rather than being written and then maintained.
 
-You create the space and a Content Management API token; I can't create accounts
-or handle tokens. `.env*` is gitignored and push protection is on, so a
-committed credential is rejected at push time.
+What that buys, beyond less code: the Studio embeds in this app at `/studio`, so
+the template ships with its own editor and deploys as one thing rather than
+sending someone off to configure a second service. The image pipeline does
+hotspot and crop, which matters most for exactly the personas where CMS-sized
+images meet fixed frames. And GROQ has no query-complexity budget, which retires
+that entire class of concern.
+
+### 7. Sanity project + credentials
+
+You create the project and an API token; I can't create accounts or handle
+tokens. `.env.local` is gitignored and push protection is on, so a committed
+credential is rejected at push time.
+
+Needed: project ID, dataset (`production`), and a token with write access for
+seeding. The read path for published content needs no token.
 
 > **Browser check:** none — no UI yet.
 
-### 8. Content model as code
+### 8. Schema in code
 
-TypeScript definitions as the single source of truth, driving the sync script,
-the generated renderer types, and typechecking of the seed templates. Mirrors
-how Sorbet's tokens generate its Sass.
+Sanity schemas under `sanity/schemas/`, which *are* the source of truth rather
+than a description of one held elsewhere. Same architecture we wanted, minus the
+sync layer.
 
-`page` carries an ordered `sections` array linking to any section type — that
-array is how the CMS dictates layout. Twelve section types, each with a `variant`
-enum; five linked entry types.
+`page` carries an ordered `sections` array of blocks — that array is how the CMS
+dictates layout. Twelve section types, each with a `variant` enum; five linked
+document types (`project`, `experience`, `writing`, `testimonial`, `skillGroup`);
+one `siteSettings` singleton carrying the Sorbet preset and nav.
 
-**Set explicit link-count validations on every rich text field.** A rich text
-field's GraphQL complexity is the *maximum* its validations permit, defaulting to
-1000 — at 20 sections that is 20,000 against an 11,000 budget, and a hard failure
-before anything real is fetched.
+Blocks are Sanity's native shape for this, so the editor gets a real ordered list
+with per-type forms, rather than Contentful's flat list of linked entries.
 
-> **Browser check:** none — but verify the content types in the Contentful web
-> app, which is the first time a human sees whether the model makes sense.
+> **Browser check:** open the Studio and add a section by hand. This is the first
+> time a human sees whether the model makes sense to *edit*, which is a different
+> question from whether it makes sense to render.
 
-### 9. Idempotent content-type sync
+### 9. Embed the Studio at `/studio`
 
-`scaffold sync` creates or updates content types via the CMA. Re-runnable
-without error or duplication.
+Mount Sanity Studio inside the Next app. Schema changes ship with a deploy, so
+there is no separate provisioning step and no way for the model and the code to
+drift apart.
 
-### 10. Generated TS types
+> **Browser check:** the Studio loads, authenticates, and lists the document
+> types. Watch for CSS bleed in both directions — the Studio ships its own
+> styling and Sorbet's stylesheet is global, so `@layer` boundaries or route
+> isolation may need attention.
 
-Emitted from the same definitions, including the discriminated union of section
-types.
+### 10. Generated types
+
+`sanity typegen` derives TypeScript types from the schema *and* from the GROQ
+queries, so a query and its result type cannot disagree. Wire it into
+`typecheck` so a schema edit that breaks a query fails CI.
 
 ## Phase 3 — Templates and seeding
 
 ### 11. Template format + seeding engine
 
 `templates/<persona>.ts` declares the theme preset, the page composition, and
-sample content. The engine upserts entries, resolves links in dependency order,
-uploads placeholder assets, and publishes. `--clean` undoes a seed.
+sample content, typechecked against the generated schema types. The engine writes
+through `@sanity/client` in a transaction, using deterministic document IDs so a
+re-run updates rather than duplicates. Assets upload first, since documents
+reference them. `--clean` undoes a seed.
+
+Deterministic IDs are what make this idempotent — no separate upsert protocol to
+design, which was most of the old item 9.
 
 ### 12. First template end-to-end: software engineer
 
-> **Browser check:** the seeded entries in Contentful — content that reads like
+> **Browser check:** the seeded documents in the Studio — content that reads like
 > a real portfolio, not lorem ipsum, because this is what every persona is
-> judged against.
+> judged against. Confirm a second run of the seed changes nothing.
 
 ## Phase 4 — Rendering
 
 ### 13. Fetch layer
 
-Typed fetching with link resolution, returning the generated section union.
-Draft vs published via the preview token.
+GROQ queries returning the generated section union, with references resolved by
+projection. Published vs draft via perspective, so preview is a parameter rather
+than a second code path.
 
-**Always set an explicit `limit` on every collection field.** Omitted or `0`
-defaults to 100, and nested collections multiply — one forgotten limit is
-100 × 100 against a budget of 11,000. Assert on the
-`X-Contentful-Graphql-Query-Cost` response header so cost is a number we watch
-rather than a cliff we walk off; with SSG these run at build time, so
-`TOO_COMPLEX_QUERY` breaks a deploy rather than slowing a page.
+No complexity budget to manage here — that was a Contentful constraint and it
+left with it. The thing to watch instead is **fetching whole documents when a
+projection would do**: GROQ will happily return everything, and a section only
+ever needs its own fields.
 
 ### 14. Section registry + first two sections
 
@@ -181,7 +209,7 @@ Unknown type or variant renders loudly in dev and is skipped in production.
 Hero and ProjectGrid first — between them they exercise the variant switch and
 linked-entry rendering.
 
-> **Browser check:** reorder sections in Contentful and reload — the page
+> **Browser check:** reorder sections in the Studio and reload — the page
 > reorders. Change a hero's `variant` — the layout changes with no code edit.
 > That round trip *is* the feature; nothing else proves it.
 >
@@ -225,14 +253,17 @@ Per-page metadata from the CMS, OG images, `sitemap.xml`, `robots.txt`.
 > **Browser check:** view source, not the rendered page — metadata correctness
 > is a question about the HTML.
 
-### 18. Draft preview + webhook revalidation
+### 18. Draft preview + revalidation
 
-Next draft mode against the preview API; a Contentful webhook revalidates on
-publish.
+Next draft mode against the `previewDrafts` perspective; a Sanity webhook
+revalidates on publish. Sanity's Presentation tool can also put the live site
+side by side with the editor, with click-to-edit — worth wiring here, since
+in-context editing was the main thing Storyblok would have won on.
 
-> **Browser check:** edit and publish in Contentful, then reload the live page
-> without redeploying. Also confirm a draft is visible in preview and *not* in
-> production.
+> **Browser check:** edit and publish in the Studio, then reload the live page
+> without redeploying. Confirm a draft is visible in preview and *not* in
+> production. If Presentation is wired, confirm clicking an element opens the
+> right field.
 
 ### 19. Deploy
 
@@ -256,5 +287,9 @@ and re-vendoring Sorbet.
 - **Layout-from-CMS has a ceiling.** Section order plus per-section variants
   covers a lot; arbitrary nesting does not. When a persona wants something the
   variants can't express, widen the variant rather than special-casing in code.
-- **Contentful free-tier limits** on content types and locales. The model is
-  ~19 types, comfortably inside, but confirm once the space exists.
+- **Sanity free-tier limits** — 3 users, 500k API requests/month, 5 GB assets,
+  1 GB bandwidth. Comfortable for a portfolio, but the seeding script uploads
+  assets on every persona, so `--clean` mattering is partly about not accreting
+  orphaned images.
+- **GROQ is a new language** to whoever maintains this. Keep queries in one
+  place with the generated types beside them, rather than scattered inline.
