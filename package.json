@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "pnpm run typegen && next build",
     "start": "next start",
     "typecheck": "next typegen && pnpm run typegen && tsc --noEmit && tsc -p tsconfig.scripts.json",
     "sync:sorbet": "pnpm --dir ${SORBET_DIR:-../sorbet} pack:vendor --to \"$PWD/vendor\" && pnpm install",
