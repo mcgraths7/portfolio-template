@@ -1,4 +1,6 @@
 allowBuilds:
+  # Sanity Studio bundles with esbuild, which links a native binary on install.
+  esbuild: true
   sharp: false
   unrs-resolver: false
 
