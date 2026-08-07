@@ -43,7 +43,7 @@ export const PAGE_QUERY = defineQuery(`
       _type,
       variant,
       _type == "sectionHero" => {
-        eyebrow, heading, lead, image, actions[]{ label, href }
+        eyebrow, heading, lead, image, actions[]{ _key, label, href }
       },
       _type == "sectionAbout" => {
         heading, body, image
@@ -75,13 +75,13 @@ export const PAGE_QUERY = defineQuery(`
         heading, logos
       },
       _type == "sectionStats" => {
-        heading, stats[]{ value, label }
+        heading, stats[]{ _key, value, label }
       },
       _type == "sectionContact" => {
-        heading, intro, email, links[]{ label, href }
+        heading, intro, email, links[]{ _key, label, href }
       },
       _type == "sectionCta" => {
-        heading, intro, actions[]{ label, href }
+        heading, intro, actions[]{ _key, label, href }
       }
     }
   }

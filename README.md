@@ -22,7 +22,7 @@ to need fixing. Working through it in order:
 - [x] Schema in code, Studio embedded at /studio
 - [x] Template format and the seeding engine
 - [x] Fetch layer + generated query types
-- [ ] Section registry and the sections themselves
+- [~] Section registry + hero and project grid (10 section types remain)
 - [ ] The four persona templates
 - [ ] SEO, draft preview, deploy
 - [ ] *(later)* Studio editing experience — block previews, visual variant
