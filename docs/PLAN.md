@@ -54,6 +54,18 @@ Known hazards in this environment, worth remembering when a check looks wrong:
   screenshot to pump a frame, then read state.
 - Each `javascript_tool` call **implicitly clicks the page**, dismissing open
   popovers. Do the action in one call and read the result in the next.
+- **Programmatic scrolling silently no-ops** — `scrollTo`, `scrollIntoView` and
+  element `scrollTop` all leave the pane at 0. The only way to view deep
+  content is a `translateY` shift.
+- **Style writes don't apply before same-call measurements.** Setting
+  `style.transform` then reading `getBoundingClientRect()` in the same
+  `javascript_tool` call measures the OLD state. Use `offsetTop` (transform-
+  independent) or split write and read across calls.
+- **Captures blank unpredictably beyond ~5000px of translateY shift**, even
+  with content filling the frame. Verify deep-page content with DOM and
+  computed-style assertions instead of insisting on pixels — a running
+  animation's `animationPlayState` is better evidence than a screenshot
+  anyway.
 
 ---
 
