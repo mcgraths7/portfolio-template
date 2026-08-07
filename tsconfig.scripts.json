@@ -11,6 +11,6 @@
     "types": ["node"],
     "plugins": []
   },
-  "include": ["scripts/**/*.ts", "sanity/schemas/type-names.ts"],
+  "include": ["scripts/**/*.ts", "templates/**/*.ts", "sanity/schemas/type-names.ts"],
   "exclude": ["node_modules"]
 }
