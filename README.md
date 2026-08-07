@@ -25,6 +25,8 @@ to need fixing. Working through it in order:
 - [ ] Section registry and the sections themselves
 - [ ] The four persona templates
 - [ ] SEO, draft preview, deploy
+- [ ] *(later)* Studio editing experience — block previews, visual variant
+      picker, click-to-edit
 
 ## Contributing
 

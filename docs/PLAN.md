@@ -279,6 +279,68 @@ and re-vendoring Sorbet.
 
 ---
 
+## Phase 6 — Studio experience (deferred)
+
+Sanity Studio is itself a React app, so the editing experience is not fixed —
+gaps can be closed by writing components. That is the answer to the one thing
+Storyblok would have done better, and it is why the CMS choice came down to
+schema-as-code: the schema win is permanent, the editing gap is closable.
+
+Deferred deliberately, not forgotten. Everything here is **code we own** and
+keep working across Studio upgrades, so it earns its place when the editing
+experience actually needs it — after real content exists and a real person has
+tried to arrange a page. Ranked by value.
+
+### 21. Previews on every section block
+
+The default rendering of an array of twelve section types is a list of
+near-identical rows, which is *worse* for arranging a page than what Contentful
+would have given. A `prepare` per section type turns that same array into a
+readable page outline:
+
+```
+Hero · split · "Steven McGrath"
+Projects · masonry · 6 items
+Experience · timeline · 4 roles
+```
+
+Highest value of anything in this phase: it is most of the difference between a
+model that makes sense to render and one that makes sense to edit.
+
+### 22. A visual variant picker
+
+`variant` is the mechanism the whole architecture rests on, and as a dropdown of
+strings — `split`, `centered`, `portrait`, `fullBleed` — it means nothing to a
+non-developer. As four small layout diagrams it explains itself.
+
+One custom input component, reused across all twelve section types.
+
+### 23. Structure Builder
+
+`siteSettings` as a genuine singleton rather than a list containing one item;
+documents grouped rather than dropped in a flat sidebar. Papercuts, but they are
+the first thing anyone sees.
+
+### 24. Presentation / click-to-edit
+
+Closes the Storyblok gap most directly: click an element on the live page, land
+on the field that produces it. Mostly configuration plus stega data attributes
+on the front end rather than building an editor, so it is cheaper than it
+sounds. Overlaps with step 18 — do the draft-preview wiring there first, then
+this on top.
+
+> **Note:** verify the Studio component APIs against current Sanity docs when
+> starting any of these. That area moves faster than the rest of the platform,
+> and this plan will be stale.
+
+**What customization cannot reach:** Storyblok is visual-first by architecture;
+Sanity is form-first with a preview alongside. These get close, and 24 gets
+closer, but the editor's mental model stays "fill in fields" rather than "edit
+the page". For someone maintaining their own portfolio a few times a year, that
+is a fine trade — worth revisiting only if that assumption turns out wrong.
+
+---
+
 ## Risks
 
 - **Re-vendoring friction.** Every Sorbet change needs a re-pack and commit.
