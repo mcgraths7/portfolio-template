@@ -3,6 +3,7 @@ import { Cluster, Container, Stack } from "@sorbet/component-library/layout";
 import { EmptyState } from "@sorbet/component-library/molecules";
 import { AppShell, AppShellHeader, AppShellMain } from "@sorbet/component-library/templates";
 
+import { isConfigured } from "../../../sanity/env";
 import { getPage, getSiteSettings } from "../../../sanity/lib/fetch";
 import { renderSection } from "./sections/registry";
 import { ThemeControl } from "./theme-control";
@@ -14,7 +15,13 @@ import { ThemeControl } from "./theme-control";
  * section type, which is what keeps adding one a registry-only change.
  */
 export default async function Home() {
-  const [settings, page] = await Promise.all([getSiteSettings(), getPage("home")]);
+  // Unconfigured (no .env.local, e.g. a fresh clone or CI) renders the setup
+  // notice without touching the network, so the build is hermetic. A
+  // CONFIGURED site whose fetch fails still fails the build loudly — see
+  // sanity/env.ts.
+  const [settings, page] = isConfigured
+    ? await Promise.all([getSiteSettings(), getPage("home")])
+    : [null, null];
 
   return (
     <AppShell>
@@ -34,10 +41,10 @@ export default async function Home() {
           {page ? (
             <Stack gap={16}>{page.sections?.map(renderSection)}</Stack>
           ) : (
-            <EmptyState title="No content yet">
-              This site renders from Sanity, and the dataset has no published “home” page. Seed one
-              with <code>pnpm seed software-engineer</code>, or create a page in the Studio at
-              /studio.
+            <EmptyState title={isConfigured ? "No content yet" : "Not connected to Sanity yet"}>
+              {isConfigured
+                ? "The dataset has no published “home” page. Seed one with `pnpm seed software-engineer`, or create a page in the Studio at /studio."
+                : "Copy .env.example to .env.local and fill in your Sanity project ID, then restart. The build works without it; the content needs it."}
             </EmptyState>
           )}
         </Container>
