@@ -1,5 +1,3 @@
-import type { Metadata } from "next";
-
 // The system stylesheet once. The preset theme is NOT a static import — the
 // CMS picks it (siteSettings.preset), so the layout links /themes/<preset>.css
 // served from the installed package by src/app/themes/[preset]/route.ts. A
@@ -8,23 +6,39 @@ import type { Metadata } from "next";
 import "@sorbet/design-system/css";
 
 import "./globals.css";
-import { isConfigured } from "../../../sanity/env";
+import { Text } from "@sorbet/component-library/atoms";
+import { Cluster, Container } from "@sorbet/component-library/layout";
+import { AppShell, AppShellHeader, AppShellMain } from "@sorbet/component-library/templates";
+
+import { isConfigured, siteUrl } from "../../../sanity/env";
 import { getSiteSettings } from "../../../sanity/lib/fetch";
 import { Providers } from "./providers";
+import { ThemeControl } from "./theme-control";
 import { ThemeScript } from "./theme-script";
+
+import type { Metadata } from "next";
 
 // No next/font here on purpose: Sorbet's type scale and font stacks are design
 // tokens, so typography arrives with the theme rather than being wired up per
 // app. A site that wants a different face overrides the font tokens.
 
-export const metadata: Metadata = {
-  title: "Portfolio",
-  description: "A CMS-driven portfolio built with Sorbet.",
-};
+/**
+ * Site-level defaults; every page route overrides with its own CMS seo fields.
+ * metadataBase is what turns sitemap/OG relatives absolute at deploy.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = isConfigured ? await getSiteSettings() : null;
+  return {
+    metadataBase: new URL(siteUrl),
+    title: settings?.name ?? "Portfolio",
+    description: settings?.tagline ?? "A CMS-driven portfolio built with Sorbet.",
+  };
+}
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   // Fetched at build (SSG) like the page itself; the schema's initialValue is
-  // the fallback for an unconfigured or unseeded site.
+  // the fallback for an unconfigured or unseeded site. cache() makes this the
+  // same fetch generateMetadata performs.
   const settings = isConfigured ? await getSiteSettings() : null;
   const preset = settings?.preset ?? "sorbet";
 
@@ -41,7 +55,25 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <ThemeScript />
       </head>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          {/* The chrome lives here so every page route — home and /[slug]
+              alike — shares it and pages render only their sections. */}
+          <AppShell>
+            <AppShellHeader>
+              <Container>
+                <Cluster justify="between" align="center" gap={4}>
+                  <Text as="span" weight="semibold">
+                    {settings?.name ?? "Portfolio"}
+                  </Text>
+                  <ThemeControl />
+                </Cluster>
+              </Container>
+            </AppShellHeader>
+            <AppShellMain>
+              <Container>{children}</Container>
+            </AppShellMain>
+          </AppShell>
+        </Providers>
       </body>
     </html>
   );

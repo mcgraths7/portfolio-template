@@ -24,7 +24,7 @@ to need fixing. Working through it in order:
 - [x] Fetch layer + generated query types
 - [x] Section registry — all twelve section types render
 - [x] The four persona templates (software engineer · graphic designer · photographer · writer)
-- [ ] SEO, draft preview, deploy
+- [~] SEO/metadata/sitemap done · draft preview + deploy remain
 - [ ] *(later)* Studio editing experience — block previews, visual variant
       picker, click-to-edit
 
