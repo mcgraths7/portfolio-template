@@ -2282,7 +2282,7 @@ packages:
       react-dom: ^19.0.0
 
   '@sorbet/design-system@file:vendor/sorbet-design-system-0.1.0.tgz':
-    resolution: {integrity: sha512-MdQb0jAC9dO9uOpRKqa3aMll83T8eAqMyCpU6Ew206eg/IPVWmBK+jufFOXJfk8L+BXT/qsfb0vFFwlPGzVxvA==, tarball: file:vendor/sorbet-design-system-0.1.0.tgz}
+    resolution: {integrity: sha512-kQ6qxnFUJzdGSLuwrqgF4wT0ZTcenzh/epbieize2KAemPGBIRbKGat+tfFRDC3PlcoTPK50Zx1RgHmyUIUGAg==, tarball: file:vendor/sorbet-design-system-0.1.0.tgz}
     version: 0.1.0
 
   '@swc/helpers@0.5.15':
