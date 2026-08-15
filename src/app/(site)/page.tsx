@@ -1,12 +1,18 @@
-import { Text } from "@sorbet/component-library/atoms";
-import { Cluster, Container, Stack } from "@sorbet/component-library/layout";
+import { Stack } from "@sorbet/component-library/layout";
 import { EmptyState } from "@sorbet/component-library/molecules";
-import { AppShell, AppShellHeader, AppShellMain } from "@sorbet/component-library/templates";
 
 import { isConfigured } from "../../../sanity/env";
-import { getPage, getSiteSettings } from "../../../sanity/lib/fetch";
+import { getPage } from "../../../sanity/lib/fetch";
+import { pageMetadata } from "./metadata";
 import { renderSection } from "./sections/registry";
-import { ThemeControl } from "./theme-control";
+
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  // cache() means this is the same fetch the page body performs, not a second.
+  const page = isConfigured ? await getPage("home") : null;
+  return page ? pageMetadata(page) : {};
+}
 
 /**
  * The home page, rendered entirely from the CMS: `page.sections` decides what
@@ -19,36 +25,17 @@ export default async function Home() {
   // notice without touching the network, so the build is hermetic. A
   // CONFIGURED site whose fetch fails still fails the build loudly — see
   // sanity/env.ts.
-  const [settings, page] = isConfigured
-    ? await Promise.all([getSiteSettings(), getPage("home")])
-    : [null, null];
+  const page = isConfigured ? await getPage("home") : null;
 
-  return (
-    <AppShell>
-      <AppShellHeader>
-        <Container>
-          <Cluster justify="between" align="center" gap={4}>
-            <Text as="span" weight="semibold">
-              {settings?.name ?? "Portfolio"}
-            </Text>
-            <ThemeControl />
-          </Cluster>
-        </Container>
-      </AppShellHeader>
+  if (!page) {
+    return (
+      <EmptyState title={isConfigured ? "No content yet" : "Not connected to Sanity yet"}>
+        {isConfigured
+          ? "The dataset has no published “home” page. Seed one with `pnpm seed software-engineer`, or create a page in the Studio at /studio."
+          : "Copy .env.example to .env.local and fill in your Sanity project ID, then restart. The build works without it; the content needs it."}
+      </EmptyState>
+    );
+  }
 
-      <AppShellMain>
-        <Container>
-          {page ? (
-            <Stack gap={16}>{page.sections?.map(renderSection)}</Stack>
-          ) : (
-            <EmptyState title={isConfigured ? "No content yet" : "Not connected to Sanity yet"}>
-              {isConfigured
-                ? "The dataset has no published “home” page. Seed one with `pnpm seed software-engineer`, or create a page in the Studio at /studio."
-                : "Copy .env.example to .env.local and fill in your Sanity project ID, then restart. The build works without it; the content needs it."}
-            </EmptyState>
-          )}
-        </Container>
-      </AppShellMain>
-    </AppShell>
-  );
+  return <Stack gap={16}>{page.sections?.map(renderSection)}</Stack>;
 }

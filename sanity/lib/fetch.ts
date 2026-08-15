@@ -1,3 +1,5 @@
+import { cache } from "react";
+
 import { client } from "./client";
 import { PAGE_QUERY, PAGE_SLUGS_QUERY, SITE_SETTINGS_QUERY } from "./queries";
 
@@ -27,17 +29,17 @@ export function sanityFetch<const Q extends string>(
   return client.fetch(query, params);
 }
 
-export function getSiteSettings(options?: SanityFetchOptions) {
-  return sanityFetch(SITE_SETTINGS_QUERY, {}, options);
-}
+// react cache() dedupes per request: layout and page both want settings, and
+// generateMetadata wants the same page its route renders — one fetch each.
+export const getSiteSettings = cache((options?: SanityFetchOptions) =>
+  sanityFetch(SITE_SETTINGS_QUERY, {}, options),
+);
 
-export function getPage(slug: string, options?: SanityFetchOptions) {
-  return sanityFetch(PAGE_QUERY, { slug }, options);
-}
+export const getPage = cache((slug: string, options?: SanityFetchOptions) =>
+  sanityFetch(PAGE_QUERY, { slug }, options),
+);
 
-export function getPageSlugs() {
-  return sanityFetch(PAGE_SLUGS_QUERY);
-}
+export const getPageSlugs = cache(() => sanityFetch(PAGE_SLUGS_QUERY));
 
 /**
  * The discriminated union the section registry switches on — one member per

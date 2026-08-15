@@ -27,3 +27,10 @@ export const isConfigured = projectId !== "placeholder";
 
 /** Pinned to a date, so the API shape cannot change under the app. */
 export const apiVersion = "2026-08-01";
+
+/**
+ * Absolute origin for canonical URLs, the sitemap, and OG fallbacks. Set for
+ * real at deploy (item 19); the localhost default keeps everything runnable
+ * and hermetic before then.
+ */
+export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:5186";
