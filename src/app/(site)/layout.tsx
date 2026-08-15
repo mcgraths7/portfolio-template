@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 
-// The system stylesheet once, then one preset theme. A real site picks the
-// preset its persona template calls for; swapping presets is swapping this
-// import. Both must come before globals.css so app-level rules win.
+// The system stylesheet once. The preset theme is NOT a static import — the
+// CMS picks it (siteSettings.preset), so the layout links /themes/<preset>.css
+// served from the installed package by src/app/themes/[preset]/route.ts. A
+// static import could only ever name one preset, which is exactly what made
+// every persona render midnight before item 16.
 import "@sorbet/design-system/css";
-import "@sorbet/design-system/themes/midnight.css";
 
 import "./globals.css";
+import { isConfigured } from "../../../sanity/env";
+import { getSiteSettings } from "../../../sanity/lib/fetch";
 import { Providers } from "./providers";
 import { ThemeScript } from "./theme-script";
 
@@ -19,7 +22,12 @@ export const metadata: Metadata = {
   description: "A CMS-driven portfolio built with Sorbet.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  // Fetched at build (SSG) like the page itself; the schema's initialValue is
+  // the fallback for an unconfigured or unseeded site.
+  const settings = isConfigured ? await getSiteSettings() : null;
+  const preset = settings?.preset ?? "sorbet";
+
   return (
     // suppressHydrationWarning: ThemeScript sets data-theme on this element
     // before React hydrates, so the DOM legitimately differs from what the
@@ -27,6 +35,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     // attributes only, not for anything in the tree below.
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Blocking on purpose: the theme must paint with the page, and it
+            must come before globals.css consumers so app rules still win. */}
+        <link rel="stylesheet" href={`/themes/${preset}.css`} />
         <ThemeScript />
       </head>
       <body>
