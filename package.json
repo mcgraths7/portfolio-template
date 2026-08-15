@@ -17,7 +17,7 @@
     "@portabletext/react": "^7.0.1",
     "@sanity/client": "^7.26.2",
     "@sanity/image-url": "^2.1.1",
-    "@sanity/vision": "^6.9.0",
+    "@sanity/vision": "^6.9.2",
     "@sorbet/component-library": "file:./vendor/sorbet-component-library-0.1.0.tgz",
     "@sorbet/design-system": "file:./vendor/sorbet-design-system-0.1.0.tgz",
     "groq": "^6.9.1",
