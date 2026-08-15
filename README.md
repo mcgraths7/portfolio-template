@@ -23,7 +23,7 @@ to need fixing. Working through it in order:
 - [x] Template format and the seeding engine
 - [x] Fetch layer + generated query types
 - [x] Section registry — all twelve section types render
-- [ ] The four persona templates
+- [x] The four persona templates (software engineer · graphic designer · photographer · writer)
 - [ ] SEO, draft preview, deploy
 - [ ] *(later)* Studio editing experience — block previews, visual variant
       picker, click-to-edit
