@@ -22,9 +22,11 @@ export function sanityFetch<const Q extends string>(
   { perspective = "published" }: SanityFetchOptions = {},
 ): Promise<ClientReturn<Q>> {
   if (perspective === "drafts") {
-    return client
-      .withConfig({ perspective: "drafts", useCdn: false, token: process.env.SANITY_API_WRITE_TOKEN })
-      .fetch(query, params);
+    // Deployed, this is a VIEWER-scope token (drafts are readable, nothing is
+    // destroyable); locally the Editor token covers both roles. See README's
+    // credentials rule.
+    const token = process.env.SANITY_API_READ_TOKEN ?? process.env.SANITY_API_WRITE_TOKEN;
+    return client.withConfig({ perspective: "drafts", useCdn: false, token }).fetch(query, params);
   }
   return client.fetch(query, params);
 }

@@ -8,7 +8,9 @@ import "@sorbet/design-system/css";
 import "./globals.css";
 import { Text } from "@sorbet/component-library/atoms";
 import { Cluster, Container } from "@sorbet/component-library/layout";
+import { Alert } from "@sorbet/component-library/molecules";
 import { AppShell, AppShellHeader, AppShellMain } from "@sorbet/component-library/templates";
+import { draftMode } from "next/headers";
 
 import { isConfigured, siteUrl } from "../../../sanity/env";
 import { getSiteSettings } from "../../../sanity/lib/fetch";
@@ -36,10 +38,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  // Fetched at build (SSG) like the page itself; the schema's initialValue is
-  // the fallback for an unconfigured or unseeded site. cache() makes this the
-  // same fetch generateMetadata performs.
-  const settings = isConfigured ? await getSiteSettings() : null;
+  // Static rendering normally; the draft cookie flips this request — and only
+  // this request — to dynamic, fetching the drafts perspective instead.
+  const { isEnabled: draft } = await draftMode();
+  const settings = isConfigured
+    ? await getSiteSettings(draft ? { perspective: "drafts" } : undefined)
+    : null;
   const preset = settings?.preset ?? "sorbet";
 
   return (
@@ -59,6 +63,11 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           {/* The chrome lives here so every page route — home and /[slug]
               alike — shares it and pages render only their sections. */}
           <AppShell>
+            {draft && (
+              <Alert tone="warning" title="Draft preview">
+                You are seeing unpublished content. <a href="/api/draft/disable">Exit preview</a>.
+              </Alert>
+            )}
             <AppShellHeader>
               <Container>
                 <Cluster justify="between" align="center" gap={4}>

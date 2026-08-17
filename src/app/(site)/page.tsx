@@ -1,6 +1,8 @@
 import { Stack } from "@sorbet/component-library/layout";
 import { EmptyState } from "@sorbet/component-library/molecules";
 
+import { draftMode } from "next/headers";
+
 import { isConfigured } from "../../../sanity/env";
 import { getPage } from "../../../sanity/lib/fetch";
 import { pageMetadata } from "./metadata";
@@ -8,9 +10,18 @@ import { renderSection } from "./sections/registry";
 
 import type { Metadata } from "next";
 
+async function homePage() {
+  // cache() dedupes this between generateMetadata and the page body; the
+  // draft cookie routes both to the drafts perspective together.
+  if (!isConfigured) {
+    return null;
+  }
+  const { isEnabled: draft } = await draftMode();
+  return getPage("home", draft ? { perspective: "drafts" } : undefined);
+}
+
 export async function generateMetadata(): Promise<Metadata> {
-  // cache() means this is the same fetch the page body performs, not a second.
-  const page = isConfigured ? await getPage("home") : null;
+  const page = await homePage();
   return page ? pageMetadata(page) : {};
 }
 
@@ -25,7 +36,7 @@ export default async function Home() {
   // notice without touching the network, so the build is hermetic. A
   // CONFIGURED site whose fetch fails still fails the build loudly — see
   // sanity/env.ts.
-  const page = isConfigured ? await getPage("home") : null;
+  const page = await homePage();
 
   if (!page) {
     return (
