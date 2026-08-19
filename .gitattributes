@@ -1,0 +1,7 @@
+# Lockfiles are derived state and are never hand-merged. On conflict, git
+# keeps the current side wholesale (the built-in "ours" driver) instead of
+# emitting conflict markers into 3,000 lines of YAML nobody wrote by hand.
+# The step that makes this correct: run `pnpm install` afterwards so the
+# resolver re-derives the file from the already-merged package.json — the
+# lockfile that lands must always be one the resolver wrote.
+pnpm-lock.yaml merge=ours
