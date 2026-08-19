@@ -30,9 +30,15 @@ to need fixing. Working through it in order:
 
 ## Contributing
 
-`main` is protected by the "Protect main" ruleset: pull requests only, no
-force-push, no deletion, and `typecheck` + `build` must pass with the branch up
-to date. All work goes branch → commit → push → PR.
+`main` is protected by the "Protect main" ruleset: pull requests only,
+**squash-merged** (one PR = one commit on main, with its `(#N)` back-reference),
+no force-push, no deletion, and `typecheck` + `build` must pass with the branch
+up to date. All work goes branch → commit → push → PR.
+
+Lockfile conflicts are never resolved by hand: `.gitattributes` keeps the
+current side wholesale on conflict — run `pnpm install` afterwards so the
+resolver re-derives the file. A lockfile the resolver didn't write is corrupt
+by definition. Dependabot PRs: comment `@dependabot recreate`.
 
 CI runs on every pull request:
 
