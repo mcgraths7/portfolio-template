@@ -31,7 +31,7 @@
     "@types/node": "^24.10.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "typescript": "^5"
+    "typescript": "^7"
   },
   "packageManager": "pnpm@11.17.0",
   "description": "A CMS-driven portfolio template built with the Sorbet design system.",
